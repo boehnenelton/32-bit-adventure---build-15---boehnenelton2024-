@@ -51,17 +51,26 @@ export class BEJSONInput {
       const tx = t.clientX - rect.left;
       const ty = t.clientY - rect.top;
 
-      // Check Joystick (Floating Joystick / Dynamic Anchor fix)
+      // Check Joystick (Floating Joystick / Tolerant Zone fix)
       const j = this.controls.joystick;
-      const distJ = Math.sqrt((tx - j.x)**2 + (ty - j.y)**2);
       
-      if (distJ < j.radius * 2 || j.active) {
-        j.active = true;
+      // Turn the entire left half of the screen into an instant-response zone
+      if (tx < rect.width / 2) {
+        if (!j.active) {
+          j.active = true;
+          // INSTANT RESPONSIVENESS: Snap the joystick base exactly where you touch
+          j.x = tx; 
+          j.y = ty;
+          j.handleX = 0;
+          j.handleY = 0;
+        }
+        
         let dx = tx - j.x;
         let dy = ty - j.y;
-        let dist = Math.sqrt(dx*dx + dy*dy);
+        let dist = Math.sqrt(dx * dx + dy * dy);
         const limit = j.radius;
-
+        
+        // If you drag past the radius, the base smoothly trails behind your thumb
         if (dist > limit) {
           const angle = Math.atan2(dy, dx);
           j.x = tx - Math.cos(angle) * limit;
@@ -70,7 +79,7 @@ export class BEJSONInput {
           dy = ty - j.y;
           dist = limit;
         }
-
+        
         j.handleX = dx;
         j.handleY = dy;
         this.touch.vector.x = j.handleX / limit;
@@ -131,15 +140,25 @@ export class BEJSONInput {
     const h = canvas.height / renderer.dpr;
     const w = canvas.width / renderer.dpr;
 
-    j.y = h - 80;
+    // ONLY snap the joystick back to a default position if you let go
+    if (!j.active) {
+      j.x = 100;       // Center-left area
+      j.y = h - 120;   // Brought further up towards the center
+      j.handleX = 0;
+      j.handleY = 0;
+    }
     
     renderer.drawCircle(j.x, j.y, j.radius, "rgba(255,255,255,0.2)", true);
     renderer.drawCircle(j.x + j.handleX, j.y + j.handleY, j.radius/2, "rgba(255,255,255,0.5)", true);
 
     const bA = this.controls.btnA;
     const bB = this.controls.btnB;
-    bA.x = w - 60; bA.y = h - 100;
-    bB.x = w - 120; bB.y = h - 60;
+    
+    // Shift the action buttons tighter to the bottom-right corner
+    bA.x = w - 50; 
+    bA.y = h - 90; 
+    bB.x = w - 100; 
+    bB.y = h - 40; 
 
     renderer.drawCircle(bA.x, bA.y, bA.radius, bA.pressed ? "#f56565" : "rgba(255,255,255,0.3)", true);
     renderer.drawText("A", bA.x - 5, bA.y + 5, { isHUD: true });

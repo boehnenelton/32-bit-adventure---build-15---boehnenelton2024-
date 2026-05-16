@@ -1,4 +1,4 @@
-export const ENGINE_VERSION = "1.6.7";
+export const ENGINE_VERSION = "1.116.0";
 
 export class GameEngine {
   canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; mfdb: Record<string, any>;
@@ -247,8 +247,14 @@ export class GameEngine {
 
   attack() {
     this.sword = {
-      x: this.player.x + this.player.facing.x * 24, y: this.player.y + this.player.facing.y * 24,
-      width: this.assets['sword']?.hitbox_width || 24, height: this.assets['sword']?.hitbox_height || 24, damage: (this.assets['sword'] || {damage: 10}).damage, life: this.assets['sword']?.lifespan || 0.2
+      x: this.player.x + this.player.facing.x * 24,
+      y: this.player.y + this.player.facing.y * 24,
+      width: this.assets['sword']?.hitbox_width || 24,
+      height: this.assets['sword']?.hitbox_height || 24,
+      damage: (this.assets['sword'] || { damage: 10 }).damage,
+      life: 0.15,
+      maxLife: 0.15,
+      facingAngle: Math.atan2(this.player.facing.y, this.player.facing.x)
     };
   }
   
@@ -433,7 +439,20 @@ export class GameEngine {
 
     if (this.sword) {
       this.sword.life -= dt;
-      this.sword.x = this.player.x + this.player.facing.x * 24; this.sword.y = this.player.y + this.player.facing.y * 24;
+      
+      const progress = 1 - (Math.max(0, this.sword.life) / this.sword.maxLife);
+      
+      // Start at -90 deg (270° / left hand relative to facing)
+      const startAngle = this.sword.facingAngle - (Math.PI / 2);
+      // Sweep a total of 150 degrees (90 deg to center + 60 deg follow-through)
+      const totalSweep = Math.PI * (150 / 180);
+      const sweepAngle = startAngle + (progress * totalSweep); 
+      
+      const reach = 28; 
+      // Move the actual invisible damage hitbox along this arc
+      this.sword.x = this.player.x + (this.player.width / 2) + Math.cos(sweepAngle) * reach - (this.sword.width / 2);
+      this.sword.y = this.player.y + (this.player.height / 2) + Math.sin(sweepAngle) * reach - (this.sword.height / 2);
+      
       if (this.sword.life <= 0) this.sword = null;
     }
     if (this.player.iFrames > 0) this.player.iFrames -= dt;
@@ -520,8 +539,27 @@ export class GameEngine {
       const drawX = Math.round(actor.x);
       const drawY = Math.round(actor.y);
 
-      if (this.loadedImages[actor.type] && this.loadedImages[actor.type].complete && this.loadedImages[actor.type].naturalWidth > 0) {
-        this.ctx.drawImage(this.loadedImages[actor.type], drawX, drawY, actor.width, actor.height);
+      this.ctx.save();
+      const cx = drawX + actor.width / 2;
+      const cy = drawY + actor.height / 2;
+
+      // Default to the actor's normal type (e.g. 'player', 'enemy')
+      let spriteId = actor.type; 
+
+      // If the player is walking UP, switch the graphic to our new back graphic!
+      if (actor.type === 'player' && actor.facing && actor.facing.y < 0) {
+          spriteId = 'player_back';
+      }
+
+      // Flip horizontally if facing left
+      if (actor.facing && actor.facing.x < 0) {
+          this.ctx.translate(cx, cy);
+          this.ctx.scale(-1, 1);
+          this.ctx.translate(-cx, -cy);
+      }
+
+      if (this.loadedImages[spriteId] && this.loadedImages[spriteId].complete && this.loadedImages[spriteId].naturalWidth > 0) {
+        this.ctx.drawImage(this.loadedImages[spriteId], drawX, drawY, actor.width, actor.height);
       } else { 
         this.ctx.fillStyle = actor.color; 
         if (actor.type === 'player') { 
@@ -532,6 +570,7 @@ export class GameEngine {
           this.ctx.fillRect(drawX, drawY, actor.width, actor.height); 
         }
       }
+      this.ctx.restore();
       
       if (actor.type === 'enemy' && actor.health < actor.maxHealth) { 
         this.ctx.fillStyle = 'red'; 
@@ -542,14 +581,36 @@ export class GameEngine {
     });
 
     if (this.sword) {
-      const sx = Math.round(this.sword.x);
-      const sy = Math.round(this.sword.y);
-      if (this.loadedImages['sword'] && this.loadedImages['sword'].complete && this.loadedImages['sword'].naturalWidth > 0) {
-        this.ctx.drawImage(this.loadedImages['sword'], sx, sy, this.sword.width, this.sword.height);
-      } else { 
-        this.ctx.fillStyle = this.assets['sword']?.fallback_color || '#eab308'; 
-        this.ctx.fillRect(sx, sy, this.sword.width, this.sword.height); 
-      }
+      const progress = 1 - (Math.max(0, this.sword.life) / this.sword.maxLife);
+      
+      const startAngle = this.sword.facingAngle - (Math.PI / 2); // 270 degrees
+      const totalSweep = Math.PI * (150 / 180);
+      const currentSweep = startAngle + (progress * totalSweep);
+      
+      const pcx = this.player.x + (this.player.width / 2);
+      const pcy = this.player.y + (this.player.height / 2);
+      const reach = 32;
+
+      this.ctx.save();
+      this.ctx.beginPath();
+      this.ctx.moveTo(pcx, pcy);
+      
+      // Draw an arc from the starting left-hand position to the current frame's position
+      this.ctx.arc(pcx, pcy, reach, startAngle, currentSweep);
+      this.ctx.closePath();
+
+      // Fill it with a fading white/silver gradient to create a fast blur effect
+      this.ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * (1 - progress)})`;
+      this.ctx.fill();
+
+      // Add a sharp, bright leading edge to the "woosh" to make it look like a blade slice
+      this.ctx.beginPath();
+      this.ctx.arc(pcx, pcy, reach, startAngle, currentSweep);
+      this.ctx.strokeStyle = `rgba(200, 230, 255, ${1 - progress})`;
+      this.ctx.lineWidth = 3;
+      this.ctx.stroke();
+
+      this.ctx.restore();
     }
     this.ctx.restore();
   }

@@ -1,8 +1,8 @@
 /**
  * switch_game.js
  * game1 aka the BEJSON Game Engine (#1)
- * Author: Elton Boehnen: Vanilla Game Wrapper (v1.0)
- * Date: 2026-05-09
+ * Author: Elton Boehnen: Vanilla Game Wrapper (Build 116)
+ * Date: 2026-05-16
  */
 
 import { SwitchEngine, ChunkManager } from './switch_core';
@@ -292,7 +292,9 @@ export class VanillaGame {
                 else {
                     this.sword = {
                         x: this.player.x + this.player.facing.x * 24, y: this.player.y + this.player.facing.y * 24,
-                        width: this.assets['sword']?.hitbox_width || 24, height: this.assets['sword']?.hitbox_height || 24, damage: (this.assets['sword'] || {damage: 10}).damage, life: this.assets['sword']?.lifespan || 0.2
+                        width: this.assets['sword']?.hitbox_width || 24, height: this.assets['sword']?.hitbox_height || 24, damage: (this.assets['sword'] || {damage: 10}).damage, life: 0.15,
+                        maxLife: 0.15,
+                        facingAngle: Math.atan2(this.player.facing.y, this.player.facing.x)
                     };
                 }
             }
@@ -424,13 +426,14 @@ export class VanillaGame {
 
         if (this.sword) {
             this.sword.life -= dt;
-            const maxLife = this.assets['sword']?.lifespan || 0.2;
             // Calculate progress from 0.0 (start) to 1.0 (end)
-            const progress = 1 - (Math.max(0, this.sword.life) / maxLife);
+            const progress = 1 - (Math.max(0, this.sword.life) / this.sword.maxLife);
             
-            const facingAngle = Math.atan2(this.player.facing.y, this.player.facing.x);
-            // Sweep 90 degrees from directly left to straight forward
-            const sweepAngle = facingAngle - (Math.PI / 2) + (progress * (Math.PI / 2));
+            // Start at -90 deg (270° / left hand)
+            const startAngle = this.sword.facingAngle - (Math.PI / 2);
+            // Sweep 150 degrees (90 deg to center + 60 deg follow-through)
+            const totalSweep = Math.PI * (150 / 180);
+            const sweepAngle = startAngle + (progress * totalSweep);
             
             // Move the physical collision box along the arc
             const reach = 28; 
@@ -488,17 +491,24 @@ export class VanillaGame {
             ctx.save();
             const cx = ax + actor.width / 2;
             const cy = ay + actor.height / 2;
+
+            // Default to the actor's normal type (e.g. 'player', 'enemy')
+            let spriteId = actor.type; 
+
+            // If the player is walking UP, switch the graphic
+            if (actor.type === 'player' && actor.facing && actor.facing.y < 0) {
+                spriteId = 'player_back';
+            }
             
-            // Only rotate if the actor has a facing vector (Player natively faces UP, so we offset by 90 deg)
-            if (actor.facing && (actor.facing.x !== 0 || actor.facing.y !== 0)) {
-                const angle = Math.atan2(actor.facing.y, actor.facing.x) + (Math.PI / 2);
+            // Mirror left
+            if (actor.facing && actor.facing.x < 0) {
                 ctx.translate(cx, cy);
-                ctx.rotate(angle);
+                ctx.scale(-1, 1);
                 ctx.translate(-cx, -cy);
             }
 
-            if (this.loadedImages[actor.type] && this.loadedImages[actor.type].complete && this.loadedImages[actor.type].naturalWidth > 0) {
-                ctx.drawImage(this.loadedImages[actor.type], ax, ay, actor.width, actor.height);
+            if (this.loadedImages[spriteId] && this.loadedImages[spriteId].complete && this.loadedImages[spriteId].naturalWidth > 0) {
+                ctx.drawImage(this.loadedImages[spriteId], ax, ay, actor.width, actor.height);
             } else { 
                 ctx.fillStyle = actor.color; 
                 if (actor.type === 'player') { 
@@ -518,33 +528,32 @@ export class VanillaGame {
         
         // Draw dynamically animated sword sweep
         if (this.sword) {
-            const maxLife = this.assets['sword']?.lifespan || 0.2;
-            const progress = 1 - (Math.max(0, this.sword.life) / maxLife);
+            const progress = 1 - (Math.max(0, this.sword.life) / this.sword.maxLife);
             
-            const facingAngle = Math.atan2(this.player.facing.y, this.player.facing.x);
-            // Sweep 90 degrees from directly left to straight forward
-            const sweepAngle = facingAngle - (Math.PI / 2) + (progress * (Math.PI / 2));
+            const startAngle = this.sword.facingAngle - (Math.PI / 2); // 270 degrees
+            const totalSweep = Math.PI * (150 / 180);
+            const currentSweep = startAngle + (progress * totalSweep);
             
             const pcx = (this.player.x - this.camera.x) + (this.player.width / 2);
             const pcy = (this.player.y - this.camera.y) + (this.player.height / 2);
-            
-            const dist = 28;
-            const sx = pcx + Math.cos(sweepAngle) * dist;
-            const sy = pcy + Math.sin(sweepAngle) * dist;
-            
-            // Add PI/4 (45 deg) to account for the sword graphic natively pointing Top-Right
-            const swordRotation = sweepAngle + (Math.PI / 4);
-            
+            const reach = 32;
+
             ctx.save();
-            ctx.translate(sx, sy);
-            ctx.rotate(swordRotation);
+            ctx.beginPath();
+            ctx.moveTo(pcx, pcy);
             
-            if (this.loadedImages['sword'] && this.loadedImages['sword'].complete && this.loadedImages['sword'].naturalWidth > 0) {
-                ctx.drawImage(this.loadedImages['sword'], -this.sword.width / 2, -this.sword.height / 2, this.sword.width, this.sword.height);
-            } else { 
-                ctx.fillStyle = this.assets['sword']?.fallback_color || '#eab308'; 
-                ctx.fillRect(-this.sword.width / 2, -this.sword.height / 2, this.sword.width, this.sword.height); 
-            }
+            // Draw an arc from the starting left-hand position to the current frame's position
+            ctx.arc(pcx, pcy, reach, startAngle, currentSweep);
+            ctx.fillStyle = `rgba(255, 255, 255, ${0.8 * (1 - progress)})`;
+            ctx.fill();
+
+            // Add a sharp, bright leading edge to the "woosh"
+            ctx.beginPath();
+            ctx.arc(pcx, pcy, reach, startAngle, currentSweep);
+            ctx.strokeStyle = `rgba(200, 230, 255, ${1 - progress})`;
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
             ctx.restore();
         }
     }

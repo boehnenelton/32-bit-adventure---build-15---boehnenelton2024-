@@ -239,7 +239,7 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
                       32-BIT ADVENTURE
                     </h1>
                     <div className="text-[10px] font-mono text-cyan-400 mb-8 border border-cyan-500/30 bg-cyan-950/50 px-3 py-1 rounded shadow-sm opacity-80 backdrop-blur-sm tracking-wider">
-                       Engine v1.6.7 <span className="mx-2 text-cyan-700">|</span> ID: sword_slasher/116
+                       Engine v1.116.0 <span className="mx-2 text-cyan-700">|</span> ID: sword_slasher/116
                     </div>
                     <div className="flex flex-col gap-3 w-56">
                        <button onClick={() => engineRef.current && (engineRef.current.state = 'PLAYING')} className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-mono text-sm font-bold uppercase rounded border-2 border-blue-400/50 shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all active:scale-95">New Game</button>

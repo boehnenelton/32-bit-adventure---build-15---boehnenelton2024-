@@ -16,11 +16,11 @@ export function Changelog() {
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Game Engine Version</span>
-            <span className="text-lg font-mono text-green-400 font-bold drop-shadow-[0_0_5px_rgba(74,222,128,0.3)]">v1.6.8</span>
+            <span className="text-lg font-mono text-green-400 font-bold drop-shadow-[0_0_5px_rgba(74,222,128,0.3)]">v1.116.0</span>
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Editors Version</span>
-            <span className="text-lg font-mono text-blue-400 font-bold drop-shadow-[0_0_5px_rgba(96,165,250,0.3)]">v1.4.8</span>
+            <span className="text-lg font-mono text-blue-400 font-bold drop-shadow-[0_0_5px_rgba(96,165,250,0.3)]">v1.116.0</span>
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">MFDB Specification</span>
@@ -258,7 +258,7 @@ export function Changelog() {
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-green-400 mt-0.5">●</span>
-                <span><b>Auto-Rehydration:</b> Import logic now intelligently strips folder prefixes (like engine_15/) to prevent path corruption.</span>
+                <span><b>Auto-Rehydration:</b> Import logic now intelligently strips folder prefixes (like engine_116/) to prevent path corruption.</span>
               </li>
             </ul>
           </div>
@@ -272,7 +272,7 @@ export function Changelog() {
             <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
               <li className="flex items-start gap-2">
                 <span className="text-green-400 mt-0.5">●</span>
-                <span><b>Pro Bundle Export:</b> Added a high-fidelity export option that packages the engine and assets into specialized folders (e.g., <code>assets_15</code> and <code>engine_15</code>) within a single ZIP.</span>
+                <span><b>Pro Bundle Export:</b> Added a high-fidelity export option that packages the engine and assets into specialized folders (e.g., <code>assets_116</code> and <code>engine_116</code>) within a single ZIP.</span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="text-blue-400 mt-0.5">●</span>
