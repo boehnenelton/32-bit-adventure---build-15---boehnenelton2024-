@@ -16,11 +16,11 @@ export function Changelog() {
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Game Engine Version</span>
-            <span className="text-lg font-mono text-green-400 font-bold drop-shadow-[0_0_5px_rgba(74,222,128,0.3)]">v1.116.0</span>
+            <span className="text-lg font-mono text-green-400 font-bold drop-shadow-[0_0_5px_rgba(74,222,128,0.3)]">v1.126.0</span>
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Editors Version</span>
-            <span className="text-lg font-mono text-blue-400 font-bold drop-shadow-[0_0_5px_rgba(96,165,250,0.3)]">v1.116.0</span>
+            <span className="text-lg font-mono text-blue-400 font-bold drop-shadow-[0_0_5px_rgba(96,165,250,0.3)]">v1.126.0</span>
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">MFDB Specification</span>
@@ -32,7 +32,7 @@ export function Changelog() {
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1 sm:col-span-2">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Relational Identity String</span>
-            <span className="text-sm font-mono text-cyan-400 font-bold drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">ID: sword_slasher/116 (Utility Batch)</span>
+            <span className="text-sm font-mono text-cyan-400 font-bold drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">ID: sword_slasher/126 (System Branding & Sync)</span>
           </div>
         </section>
 
@@ -42,7 +42,195 @@ export function Changelog() {
           <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
              <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
             <div className="flex items-center justify-between border-b border-white/5 pb-2">
-              <h3 className="font-bold text-white text-base">Update 1.6.9 (Build 116 Foundation)</h3>
+              <h3 className="font-bold text-white text-base">Update 2.2.0 (Build 126 Branding & Export Sync)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Branding Alignment:</b> Unified "Sword Slasher" naming across <code>metadata.json</code>, <code>package.json</code>, and UI.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Meta Description:</b> Updated project metadata with detailed engine capability summary for export.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 126:</b> Global version bump to v1.126.0 for production readiness.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 2.1.0 (Build 125 Expanded Tabs & Filtering)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Category-Specific Tabs:</b> Expanded inventory to include dedicated Armor, Consumable, and Quest tabs.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Horizontal Scrolling:</b> Implemented touch-safe horizontal scrolling for the menu navigation bar.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-orange-400 mt-0.5">●</span>
+                <span><b>Context-Aware Filtering:</b> Selection bounds and navigation now strictly respect the active category tab.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 125:</b> Evolutionary bump to v1.125.0.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 2.0.0 (Build 124 Dual-Slot Gear & Tabs)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Dual Action Slots:</b> Separated Gear into Sword (A) and Tool (C) slots for ALttP-style combat.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Tabbed Inventory:</b> Redesigned Item Menu with dedicated tabs for Swords and Utilities.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-orange-400 mt-0.5">●</span>
+                <span><b>HUD Refresh:</b> Status bar now displays both equipped slots with primary/secondary labels.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 124:</b> Milestone bump to v1.124.0.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 1.9.5 (Build 123 Telegraph AI & Visuals)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Zelda-Style State Machine:</b> Implemented Idle → Windup → Charge → Cooldown cycles for all enemies.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Visual Telegraphing:</b> Added a high-contrast flashing effect during the 'Windup' phase to signal imminent attacks.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-orange-400 mt-0.5">●</span>
+                <span><b>Blind Charging:</b> Enemies now lock into a trajectory at the end of windup, allowing players to sidestep attacks.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 123:</b> Evolutionary bump to v1.123.0 for advanced combat mechanics.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 1.9.0 (Build 122 AI & Silhouettes)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Prefix-Based AI:</b> Engine now uses <code>startsWith('npc')</code> and <code>startsWith('enemy')</code> for flexible actor classification.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Shadow Silhouettes:</b> Integrated gray placeholder silhouettes using the engine's <code>fallback_color</code> system.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 122:</b> Evolutionary bump to v1.122.0.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 1.8.5 (Build 121 Physics & Depth)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Actor Collision:</b> Implemented <code>checkActorCollision</code> to prevent characters from walking through each other.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Y-Sorting (2.5D Depth):</b> Actors are now sorted by Y-axis before drawing, ensuring correct visual overlap perspective.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 121:</b> Full system bump to v1.121.0 for enhanced game physics.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 1.8.0 (Build 120 PNG Integration)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Manual Sprite Injection:</b> Successfully integrated user-provided PNG Base64 strings for 'npc_generic_1' (Front/Back).</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Asset Manifest Sync:</b> Registered npc_generic_1 in MFDB and ActorStats for immediate use in the Map Editor.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 120:</b> Version bumped across all systems to 1.120.0.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 1.7.0 (Build 118 PNG Sprites)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>PNG Sprite System:</b> Integrated 2 high-fidelity base sprites from the user, expanded into 10 unique templates via SVG palette-swapping (Hue shift).</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Palette Swapping Engine:</b> Real-time generation of distinctive NPCs through dynamic SVG color transformation filters.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 118:</b> Bumped version to 1.118.0 across all manifests and engines.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 1.6.9 (Build 117 Foundation)</h3>
               <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
             </div>
             <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">

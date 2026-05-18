@@ -1,4 +1,4 @@
-export const ENGINE_VERSION = "1.116.0";
+export const ENGINE_VERSION = "1.126.0";
 
 export class GameEngine {
   canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; mfdb: Record<string, any>;
@@ -130,7 +130,7 @@ export class GameEngine {
         atk: a[6] || statsConfig.atk, def: a[7] || statsConfig.def, level: a[2] === 'player' ? 1 : (Math.floor(Math.random() * 2) + 1), xp: 0, maxXp: 100,
         potions: statsConfig.start_potions || 0, xpReward: statsConfig.xp_reward, levelUpHp: statsConfig.level_up_hp,
         levelUpAtk: statsConfig.level_up_atk, levelUpDef: statsConfig.level_up_def, knockback_force: statsConfig.knockback_force, potion_heal_amount: statsConfig.potion_heal_amount,
-        equipment: { weapon: null as any, armor: null as any }
+        equipment: { sword: null as any, tool: null as any, armor: null as any }
       };
       if (a[2] === 'player') {
           this.player = actor;
@@ -141,7 +141,7 @@ export class GameEngine {
           const clothTunic = itemsDb.find((i: any) => i[0] === 'arm_cloth');
           
           if (rustySword) {
-              this.player.equipment.weapon = { item_id: rustySword[0], name: rustySword[1], type: rustySword[2], attack_bonus: rustySword[7], defense_bonus: rustySword[8] };
+              this.player.equipment.sword = { item_id: rustySword[0], name: rustySword[1], type: rustySword[2], attack_bonus: rustySword[7], defense_bonus: rustySword[8] };
           }
           if (clothTunic) {
               this.player.equipment.armor = { item_id: clothTunic[0], name: clothTunic[1], type: clothTunic[2], attack_bonus: clothTunic[7], defense_bonus: clothTunic[8] };
@@ -186,15 +186,17 @@ export class GameEngine {
       if (this.state === 'MENU' || this.state === 'ITEM_MENU') return;
       if (this.state === 'DIALOG') { if (code === 'Space' || code === 'KeyA') { this.state = 'PLAYING'; this.dialogText = null; } return; }
 
-      if ((code === 'Space' || code === 'KeyA') && !this.sword && this.player) {
+      if ((code === 'Space' || code === 'KeyA') && !this.sword && this.player && this.player.equipment?.sword) {
         const npc = this.actors.find(a => {
-           if (a.type !== 'npc') return false;
+           if (!a.type.startsWith('npc')) return false;
            const dist = Math.sqrt(Math.pow((a.x + a.width/2) - (this.player.x + this.player.width/2), 2) + Math.pow((a.y + a.height/2) - (this.player.y + this.player.height/2), 2));
            return dist < 60;
         });
         if (npc) { this.runEvent(npc.id + "_talk"); } else this.attack();
       }
-      if ((code === 'KeyC' || code === 'KeyR') && this.state === 'PLAYING') {
+      if (code === 'KeyC' && this.state === 'PLAYING' && this.player?.equipment?.tool) {
+         this.useTool(this.player.equipment.tool);
+      } else if ((code === 'KeyC' || code === 'KeyR') && this.state === 'PLAYING' && !this.player?.equipment?.tool) {
          if (this.player && this.player.potions > 0 && this.player.health < this.player.maxHealth) {
             this.player.potions--; this.player.health = Math.min(this.player.maxHealth, this.player.health + (this.player.potion_heal_amount ?? 50));
             this.notifyPlayerChange();
@@ -217,6 +219,23 @@ export class GameEngine {
              }
           });
       }
+  }
+
+  useTool(tool: any) {
+    if (!this.player) return;
+    
+    // Potions can also be tools if equipped
+    if (tool.type === 'heal' || tool.item_id === 'potion') {
+        if (this.player.potions > 0 && this.player.health < this.player.maxHealth) {
+            this.player.potions--;
+            this.player.health = Math.min(this.player.maxHealth, this.player.health + (this.player.potion_heal_amount ?? 50));
+            this.notifyPlayerChange();
+        }
+        return;
+    }
+
+    // placeholder tool effect (e.g. projectile or burst)
+    console.log("Using tool:", tool.name);
   }
 
   calculateDamage(attacker: any, defender: any, weapon?: any, armor?: any) {
@@ -305,30 +324,42 @@ export class GameEngine {
     const checkTileCollision = (actor: any, vx: number, vy: number) => {
       const newX = actor.x + vx * dt; 
       const newY = actor.y + vy * dt;
-      
-      // Hitbox margin for better corner sliding
       const margin = 6; 
 
       for (const tile of this.tiles) {
         const rules = this.assets[tile.terrain_type || tile.object_type];
-        
         if (rules && rules.is_solid) {
-          const actorLeft = newX + margin;
-          const actorRight = newX + actor.width - margin;
-          const actorTop = newY + margin;
-          const actorBottom = newY + actor.height - margin;
+          const actorLeft = newX + margin; const actorRight = newX + actor.width - margin;
+          const actorTop = newY + margin; const actorBottom = newY + actor.height - margin;
+          const tileLeft = tile.x * this.tileSize; const tileRight = tileLeft + this.tileSize;
+          const tileTop = tile.y * this.tileSize; const tileBottom = tileTop + this.tileSize;
+          if (actorLeft < tileRight && actorRight > tileLeft && actorTop < tileBottom && actorBottom > tileTop) return true;
+        }
+      }
+      return false;
+    };
 
-          const tileLeft = tile.x * this.tileSize;
-          const tileRight = tileLeft + this.tileSize;
-          const tileTop = tile.y * this.tileSize;
-          const tileBottom = tileTop + this.tileSize;
+    const checkActorCollision = (actor: any, vx: number, vy: number) => {
+      const newX = actor.x + vx * dt;
+      const newY = actor.y + vy * dt;
+      const margin = 6; 
 
-          if (actorLeft < tileRight && 
-              actorRight > tileLeft && 
-              actorTop < tileBottom && 
-              actorBottom > tileTop) {
-            return true;
-          }
+      for (const other of this.actors) {
+        if (other === actor) continue;
+
+        const actorLeft = newX + margin;
+        const actorRight = newX + actor.width - margin;
+        const actorTop = newY + margin;
+        const actorBottom = newY + actor.height - margin;
+
+        const otherLeft = other.x + margin;
+        const otherRight = other.x + other.width - margin;
+        const otherTop = other.y + margin;
+        const otherBottom = other.y + other.height - margin;
+
+        if (actorLeft < otherRight && actorRight > otherLeft && 
+            actorTop < otherBottom && actorBottom > otherTop) {
+          return true;
         }
       }
       return false;
@@ -339,18 +370,68 @@ export class GameEngine {
     for (let i = this.actors.length - 1; i >= 0; i--) {
       const actor = this.actors[i];
       actor.pendingVx = 0; actor.pendingVy = 0;
-      if (actor.type === 'enemy' || actor.type === 'chest') {
-        if (actor.type === 'enemy') {
-          const dx = this.player.x - actor.x; const dy = this.player.y - actor.y; const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist > 0 && dist < 300) {
-            actor.pendingVx = (dx / dist) * actor.speed;
-            actor.pendingVy = (dy / dist) * actor.speed;
+      if (actor.type.startsWith('enemy') || actor.type === 'chest') {
+        if (actor.type.startsWith('enemy')) {
+          const dx = this.player.x - actor.x; 
+          const dy = this.player.y - actor.y; 
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          // 1. Initialize AI State if it doesn't exist
+          if (!actor.aiState) {
+            actor.aiState = 'idle';
+            actor.stateTimer = 0;
+          }
+
+          // 2. The AI State Machine
+          if (actor.aiState === 'idle') {
+            actor.pendingVx = 0;
+            actor.pendingVy = 0;
+            
+            // Perceptual Distance (e.g., 200 pixels)
+            if (dist > 0 && dist < 200) {
+              actor.aiState = 'windup';
+              actor.stateTimer = 0.6; // Wind up for 0.6 seconds
+            }
+          } 
+          else if (actor.aiState === 'windup') {
+            // Stand still and telegraph the attack
+            actor.pendingVx = 0;
+            actor.pendingVy = 0;
+            actor.stateTimer -= dt;
+
+            if (actor.stateTimer <= 0) {
+              actor.aiState = 'charge';
+              actor.stateTimer = 0.8; // Charge blindly for 0.8 seconds
+
+              // Lock in the trajectory based on where the player IS NOW
+              actor.lockedVx = (dx / dist) * (actor.speed * 1.5); 
+              actor.lockedVy = (dy / dist) * (actor.speed * 1.5);
+            }
+          } 
+          else if (actor.aiState === 'charge') {
+            // Charge blindly in the locked direction
+            actor.pendingVx = actor.lockedVx;
+            actor.pendingVy = actor.lockedVy;
+            actor.stateTimer -= dt;
+
+            if (actor.stateTimer <= 0) {
+              actor.aiState = 'cooldown';
+              actor.stateTimer = 0.5; // Rest
+            }
+          } 
+          else if (actor.aiState === 'cooldown') {
+            actor.pendingVx = 0;
+            actor.pendingVy = 0;
+            actor.stateTimer -= dt;
+            if (actor.stateTimer <= 0) {
+              actor.aiState = 'idle';
+            }
           }
         }
         if (this.sword && this.checkCollision(actor, this.sword)) {
           if (actor.type === 'chest') { this.player.potions++; this.notifyPlayerChange(); this.actors.splice(i, 1); continue; }
           
-          const damage = this.calculateDamage(this.player, actor, this.player.equipment.weapon, actor.equipment?.armor);
+          const damage = this.calculateDamage(this.player, actor, this.player.equipment.sword, actor.equipment?.armor);
           actor.health -= damage;
           
           const kbForce = this.assets['sword']?.knockback_force || this.player.knockback_force || 400;
@@ -366,9 +447,9 @@ export class GameEngine {
             this.notifyPlayerChange();
           }
         }
-        if (actor.type === 'enemy' && this.checkCollision(actor, this.player)) {
+        if (actor.type.startsWith('enemy') && this.checkCollision(actor, this.player)) {
           if (!this.player.iFrames || this.player.iFrames <= 0) {
-             const damage = this.calculateDamage(actor, this.player, actor.equipment?.weapon, this.player.equipment.armor);
+             const damage = this.calculateDamage(actor, this.player, actor.equipment?.sword, this.player.equipment.armor);
              this.player.health -= damage;
              this.player.iFrames = 1.0;
              this.notifyPlayerChange();
@@ -411,9 +492,9 @@ export class GameEngine {
     const totalVx = impulseVx + (this.player.pendingVx || 0);
     const totalVy = impulseVy + (this.player.pendingVy || 0);
     
-    // Independent axis movement
-    let canMoveX = !checkTileCollision(this.player, totalVx, 0);
-    let canMoveY = !checkTileCollision(this.player, 0, totalVy);
+    // Independent axis movement (Now checks both Tiles AND Actors)
+    let canMoveX = !checkTileCollision(this.player, totalVx, 0) && !checkActorCollision(this.player, totalVx, 0);
+    let canMoveY = !checkTileCollision(this.player, 0, totalVy) && !checkActorCollision(this.player, 0, totalVy);
 
     this.player.vx = canMoveX ? totalVx : 0;
     this.player.vy = canMoveY ? totalVy : 0;
@@ -460,16 +541,16 @@ export class GameEngine {
     // 3. Apply the resulting safe combat velocity to the Enemy coordinates
     for (let i = this.actors.length - 1; i >= 0; i--) {
       const actor = this.actors[i];
-      if (actor.type === 'enemy' || actor.type === 'chest') {
-        actor.vx = checkTileCollision(actor, actor.pendingVx, 0) ? 0 : actor.pendingVx;
-        actor.vy = checkTileCollision(actor, 0, actor.pendingVy) ? 0 : actor.pendingVy;
+      if (actor.type.startsWith('enemy') || actor.type === 'chest') {
+        actor.vx = (checkTileCollision(actor, actor.pendingVx, 0) || checkActorCollision(actor, actor.pendingVx, 0)) ? 0 : actor.pendingVx;
+        actor.vy = (checkTileCollision(actor, 0, actor.pendingVy) || checkActorCollision(actor, 0, actor.pendingVy)) ? 0 : actor.pendingVy;
         actor.x = Math.max(0, Math.min(actor.x + actor.vx * dt, levelWidth - actor.width));
         actor.y = Math.max(0, Math.min(actor.y + actor.vy * dt, levelHeight - actor.height));
       }
     }
     
     if (this.level && this.level.victory_condition !== 'none' && this.actors.length > 0) {
-      if (this.level.victory_condition === 'eliminate_all' && !this.actors.some(a => a.type === 'enemy' || a.type === 'enemy_boss')) {
+      if (this.level.victory_condition === 'eliminate_all' && !this.actors.some(a => a.type.startsWith('enemy'))) {
           this.state = 'VICTORY';
       } else if (this.level.victory_condition === 'eliminate_boss' && !this.actors.some(a => this.actorStats[a.type]?.is_victory_target)) {
           this.state = 'VICTORY';
@@ -533,7 +614,10 @@ export class GameEngine {
        }
     });
 
-    this.actors.forEach(actor => {
+    // Sort actors by their bottom-most Y coordinate to create 2.5D depth
+    const sortedActors = [...this.actors].sort((a, b) => (a.y + a.height) - (b.y + b.height));
+    
+    sortedActors.forEach(actor => {
       if (actor.type === 'player' && this.player.iFrames > 0 && Math.floor(this.player.iFrames * 10) % 2 === 0) return;
       
       const drawX = Math.round(actor.x);
@@ -546,9 +630,12 @@ export class GameEngine {
       // Default to the actor's normal type (e.g. 'player', 'enemy')
       let spriteId = actor.type; 
 
-      // If the player is walking UP, switch the graphic to our new back graphic!
-      if (actor.type === 'player' && actor.facing && actor.facing.y < 0) {
-          spriteId = 'player_back';
+      // Sprite swapping for back-facing graphics
+      if (actor.facing && actor.facing.y < 0) {
+          const backSpriteId = `${actor.type}_back`;
+          if (this.loadedImages[backSpriteId] && this.loadedImages[backSpriteId].complete && this.loadedImages[backSpriteId].naturalWidth > 0) {
+              spriteId = backSpriteId;
+          }
       }
 
       // Flip horizontally if facing left
@@ -556,6 +643,11 @@ export class GameEngine {
           this.ctx.translate(cx, cy);
           this.ctx.scale(-1, 1);
           this.ctx.translate(-cx, -cy);
+      }
+
+      // Visual Telegraphing for Windup state
+      if (actor.aiState === 'windup' && Math.floor(performance.now() / 100) % 2 === 0) {
+          this.ctx.filter = 'brightness(2) contrast(2)';
       }
 
       if (this.loadedImages[spriteId] && this.loadedImages[spriteId].complete && this.loadedImages[spriteId].naturalWidth > 0) {
@@ -570,6 +662,7 @@ export class GameEngine {
           this.ctx.fillRect(drawX, drawY, actor.width, actor.height); 
         }
       }
+      this.ctx.filter = 'none';
       this.ctx.restore();
       
       if (actor.type === 'enemy' && actor.health < actor.maxHealth) { 

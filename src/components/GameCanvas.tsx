@@ -126,12 +126,22 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
   };
 
   const [selectedItemIndex, setSelectedItemIndex] = useState(0);
+  const [inventoryTab, setInventoryTab] = useState<'sword' | 'tool' | 'armor' | 'consumable' | 'quest'>('sword');
 
-  const inventoryItems = (db["data/items.bejson"]?.Values || []).filter((item: any) => {
+  const inventoryItems = (db["data/items.bejson"]?.Values || []).map((item: any) => item);
+
+  const filteredItems = inventoryItems.filter((item: any) => {
      const type = item[2];
      const propName = item[5];
-     if (type === 'equipment') return true; // Show all equipment for now
-     return engineState.player && engineState.player[propName] > 0;
+     const slot = item[6];
+     
+     if (inventoryTab === 'sword') return type === 'equipment' && slot === 'sword';
+     if (inventoryTab === 'tool') return type === 'equipment' && slot === 'tool';
+     if (inventoryTab === 'armor') return type === 'equipment' && slot === 'armor';
+     if (inventoryTab === 'consumable') return type === 'heal' || type === 'boost_atk' || type === 'consumable';
+     if (inventoryTab === 'quest') return type === 'quest';
+     
+     return false;
   });
 
   const handleButton = (code: string, isDown: boolean, e: React.PointerEvent | React.TouchEvent | React.MouseEvent) => {
@@ -148,16 +158,16 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
     
     // Menu navigation override for ITEM_MENU
     if (engineState.state === 'ITEM_MENU' && isDown) {
-       if (code === 'ArrowRight' && inventoryItems.length > 0) {
-           setSelectedItemIndex(prev => (prev + 1) % inventoryItems.length);
+       if (code === 'ArrowRight' && filteredItems.length > 0) {
+           setSelectedItemIndex(prev => (prev + 1) % filteredItems.length);
            return;
        }
-       if (code === 'ArrowLeft' && inventoryItems.length > 0) {
-           setSelectedItemIndex(prev => (prev - 1 + inventoryItems.length) % inventoryItems.length);
+       if (code === 'ArrowLeft' && filteredItems.length > 0) {
+           setSelectedItemIndex(prev => (prev - 1 + filteredItems.length) % filteredItems.length);
            return;
        }
-       if (code === 'KeyC' && inventoryItems.length > 0) {
-           useItem(inventoryItems[selectedItemIndex % inventoryItems.length]);
+       if (code === 'KeyC' && filteredItems.length > 0) {
+           useItem(filteredItems[selectedItemIndex % filteredItems.length]);
            return;
        }
     }
@@ -178,10 +188,12 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
           const bonusAtk = itemConfig[7];
           const bonusDef = itemConfig[8];
           
-          if (!player.equipment) player.equipment = { weapon: null, armor: null };
+          if (!player.equipment) player.equipment = { sword: null, tool: null, armor: null };
           
-          if (slot === 'weapon') {
-              player.equipment.weapon = { item_id: itemConfig[0], name: itemConfig[1], type: itemConfig[2], attack_bonus: bonusAtk, defense_bonus: bonusDef };
+          if (slot === 'sword') {
+              player.equipment.sword = { item_id: itemConfig[0], name: itemConfig[1], type: itemConfig[2], attack_bonus: bonusAtk, defense_bonus: bonusDef };
+          } else if (slot === 'tool') {
+              player.equipment.tool = { item_id: itemConfig[0], name: itemConfig[1], type: itemConfig[2], attack_bonus: bonusAtk, defense_bonus: bonusDef };
           } else if (slot === 'armor') {
               player.equipment.armor = { item_id: itemConfig[0], name: itemConfig[1], type: itemConfig[2], attack_bonus: bonusAtk, defense_bonus: bonusDef };
           }
@@ -236,10 +248,10 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
               {engineState.state === 'TITLE' && (
                  <div className="absolute top-0 left-0 right-0 h-[60%] z-30 bg-black/80 flex flex-col items-center justify-center pointer-events-auto backdrop-blur-sm border-b border-white/10">
                     <h1 className="text-3xl font-mono text-blue-500 font-bold mb-4 drop-shadow-[0_0_20px_rgba(59,130,246,1)] tracking-widest text-center" style={{textShadow: "2px 2px 0 #1e3a8a, -2px -2px 0 #1e3a8a, 2px -2px 0 #1e3a8a, -2px 2px 0 #1e3a8a, 0 4px 10px rgba(0,0,0,0.8)"}}>
-                      32-BIT ADVENTURE
+                      SWORD SLASHER
                     </h1>
                     <div className="text-[10px] font-mono text-cyan-400 mb-8 border border-cyan-500/30 bg-cyan-950/50 px-3 py-1 rounded shadow-sm opacity-80 backdrop-blur-sm tracking-wider">
-                       Engine v1.116.0 <span className="mx-2 text-cyan-700">|</span> ID: sword_slasher/116
+                       Engine v1.126.0 <span className="mx-2 text-cyan-700">|</span> ID: sword_slasher/126
                     </div>
                     <div className="flex flex-col gap-3 w-56">
                        <button onClick={() => engineRef.current && (engineRef.current.state = 'PLAYING')} className="px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-mono text-sm font-bold uppercase rounded border-2 border-blue-400/50 shadow-[0_0_15px_rgba(59,130,246,0.5)] transition-all active:scale-95">New Game</button>
@@ -280,7 +292,7 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
                          <div className="grid grid-cols-2 gap-y-1 text-[11px]">
                             <div className="text-gray-400">LEVEL</div><div className="text-white text-right">{engineState.player?.level}</div>
                             <div className="text-gray-400">HEALTH</div><div className="text-white text-right">{Math.floor(engineState.player?.health || 0)} / {engineState.player?.maxHealth}</div>
-                            <div className="text-cyan-400 font-bold border-t border-white/10 pt-1">TOTAL ATK</div><div className="text-cyan-400 font-bold text-right border-t border-white/10 pt-1">{ (engineState.player?.atk || 0) + (engineState.player?.equipment?.weapon?.attack_bonus || 0) }</div>
+                            <div className="text-cyan-400 font-bold border-t border-white/10 pt-1">TOTAL ATK</div><div className="text-cyan-400 font-bold text-right border-t border-white/10 pt-1">{ (engineState.player?.atk || 0) + (engineState.player?.equipment?.sword?.attack_bonus || 0) }</div>
                             <div className="text-cyan-400 font-bold">TOTAL DEF</div><div className="text-cyan-400 font-bold text-right">{ (engineState.player?.def || 0) + (engineState.player?.equipment?.armor?.defense_bonus || 0) }</div>
                          </div>
                       </div>
@@ -349,7 +361,7 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
                   <span className="text-[10px] font-mono text-gray-500">SELECT ITEMS TO USE</span>
                 </div>
                 
-                <div className="flex items-center gap-2 mb-6">
+                <div className="flex items-center gap-2 mb-4">
                    <div className="flex-1 h-2 bg-gray-800 rounded-full overflow-hidden border border-white/5">
                       <div className="h-full bg-green-500" style={{ width: `${Math.max(0, Math.min(100, (engineState.player.health / engineState.player.maxHealth) * 100))}%` }}></div>
                    </div>
@@ -358,17 +370,34 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
                    </span>
                 </div>
 
+                {/* Tabs (Scrollable) */}
+                <div className="flex overflow-x-auto gap-2 mb-4 border-b border-white/10 pb-2 custom-scrollbar shrink-0">
+                   {(['sword', 'tool', 'armor', 'consumable', 'quest'] as const).map((tab) => (
+                       <button 
+                          key={tab}
+                          onClick={() => { setInventoryTab(tab); setSelectedItemIndex(0); }} 
+                          className={`px-4 py-1.5 font-bold text-[10px] uppercase tracking-widest rounded-t transition-colors shrink-0 ${inventoryTab === tab ? 'bg-blue-600 text-white' : 'bg-black/40 text-gray-400 hover:text-white'}`}
+                       >
+                          {tab === 'sword' ? 'Swords' : tab === 'tool' ? 'Tools' : tab === 'armor' ? 'Armor' : tab === 'consumable' ? 'Consumables' : 'Quest'}
+                       </button>
+                   ))}
+                </div>
+
                 <div className="flex-1 overflow-y-auto pr-2 space-y-3 custom-scrollbar">
-                   {inventoryItems.length === 0 ? (
+                   {filteredItems.length === 0 ? (
                       <div className="flex flex-col items-center justify-center h-48 opacity-20">
                          <div className="w-12 h-12 rounded-full border-4 border-dashed border-white mb-2"></div>
-                         <p className="text-white font-bold text-sm">EMPTY BAG</p>
+                         <p className="text-white font-bold text-sm uppercase">NO {inventoryTab}S</p>
                       </div>
                    ) : (
-                      inventoryItems.map((item: any, idx: number) => {
-                         const isEquipped = item[2] === 'equipment' && (engineState.player?.equipment?.weapon?.item_id === item[0] || engineState.player?.equipment?.armor?.item_id === item[0]);
+                      filteredItems.map((item: any, idx: number) => {
+                         const isEquipped = item[2] === 'equipment' && (
+                            engineState.player?.equipment?.sword?.item_id === item[0] || 
+                            engineState.player?.equipment?.tool?.item_id === item[0] ||
+                            engineState.player?.equipment?.armor?.item_id === item[0]
+                         );
                          const count = item[2] !== 'equipment' ? (engineState.player?.[item[5]] || 0) : 1;
-                         const isSelected = inventoryItems.length > 0 && idx === (selectedItemIndex % inventoryItems.length);
+                         const isSelected = filteredItems.length > 0 && idx === (selectedItemIndex % filteredItems.length);
                          
                          return (
                             <button 
@@ -385,7 +414,7 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
                                </div>
                                <div className="bg-black/30 px-3 py-1 rounded-full text-xs font-mono text-white font-bold">
                                   {item[2] === 'equipment' ? (isEquipped ? 'ON' : 'OFF') : `x${count}`}
-                               </div>
+                                </div>
                             </button>
                          );
                       })
@@ -424,7 +453,7 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
                     <div className="flex gap-4 items-center">
                         <div className="flex flex-col items-center">
                            <div className="text-[8px] text-gray-500 uppercase">ATK</div>
-                           <div className="text-sm font-mono text-white font-bold">{(engineState.player?.atk || 0) + (engineState.player?.equipment?.weapon?.attack_bonus || 0)}</div>
+                           <div className="text-sm font-mono text-white font-bold">{(engineState.player?.atk || 0) + (engineState.player?.equipment?.sword?.attack_bonus || 0)}</div>
                         </div>
                         <div className="flex flex-col items-center">
                            <div className="text-[8px] text-gray-500 uppercase">DEF</div>
@@ -432,15 +461,16 @@ export function GameCanvas({ db, setDb }: { db: any, setDb: (db: any) => void })
                         </div>
                     </div>
                  </div>
-                 
-                 <div className="flex flex-col gap-1 items-center">
+                                 <div className="flex flex-col gap-1 items-center">
                     <div className="text-[10px] text-blue-400 font-bold uppercase opacity-50 tracking-tighter">Active Gear</div>
                     <div className="flex gap-2">
-                       <div className="w-8 h-8 rounded border border-white/5 bg-black/20 flex items-center justify-center" title="Weapon">
-                          <div className="w-4 h-4 rounded-full" style={{ backgroundColor: db["data/items.bejson"]?.Values?.find((i:any) => i[0] === engineState.player?.equipment?.weapon?.item_id)?.[4] || '#333' }}></div>
+                       <div className="w-8 h-8 rounded border border-white/5 bg-black/20 flex items-center justify-center relative" title="Sword (A)">
+                          <div className="absolute top-0.5 left-0.5 text-[6px] text-gray-500 font-bold">A</div>
+                          <div className="w-4 h-4 rounded-full" style={{ backgroundColor: db["data/items.bejson"]?.Values?.find((i:any) => i[0] === engineState.player?.equipment?.sword?.item_id)?.[4] || '#333' }}></div>
                        </div>
-                       <div className="w-8 h-8 rounded border border-white/5 bg-black/20 flex items-center justify-center" title="Armor">
-                          <div className="w-4 h-4 rounded-full" style={{ backgroundColor: db["data/items.bejson"]?.Values?.find((i:any) => i[0] === engineState.player?.equipment?.armor?.item_id)?.[4] || '#333' }}></div>
+                       <div className="w-8 h-8 rounded border border-white/5 bg-black/20 flex items-center justify-center relative" title="Tool (C)">
+                          <div className="absolute top-0.5 left-0.5 text-[6px] text-gray-500 font-bold">C</div>
+                          <div className="w-4 h-4 rounded-full" style={{ backgroundColor: db["data/items.bejson"]?.Values?.find((i:any) => i[0] === engineState.player?.equipment?.tool?.item_id)?.[4] || '#333' }}></div>
                        </div>
                     </div>
                  </div>

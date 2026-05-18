@@ -1,6 +1,8 @@
 {
-  "name": "Remix: Remix: Remix: 32bit Adventure - Build 0116",
-  "description": "key: SWORD-SLASHER-ORIGIN-0116\nPRE FORK",
+  "name": "Sword Slasher",
+  "description": "A 32-bit top-down adventure engine with dynamic AI, 2.5D depth, and Zelda-inspired combat mechanics.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }

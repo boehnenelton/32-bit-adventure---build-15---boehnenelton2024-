@@ -1,5 +1,9 @@
 export const generateMFDB = () => {
 const encodeSVG = (svg: string) => `data:image/svg+xml;base64,${btoa(svg)}`;
+const pngFront = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABOklEQVR4AeyVUY7CMAxE7b3J7gfc/zjwsXuU7kyKqyLa2BNACInKxnGZ2C8pDV/24usDcM8OTHh6a0eq2yjA9Hs42NrRmjAImo0CaF066hGAttKf89nWfunRvruMS0EFmHBZz9FVglAA0DevDREYLBdSBVcAIJ/N3c3d5wSf7n6V41bZhgC4Snp04ZgeuRIVAMfVVppFADi8ZBUAPs/wUlGIQs+IdN8ygJsDZ334VMZo3YXIADB/tu/TySo+q205IyLfi2UAFvg7Hq3n1KguAajFK/oMwOO45cqzgtSEHlq+CeFIty0D4CwWYVS8PKcC0BrHyrLYxMJHGUCoKUlHALi9Wy41DvEIQMx9SPwAvMUOdP9Mdn4I5TnZDpQLbYCU5mYAG3UfeysDUN53RbusIgNYhM8aPB0gA/8HAAD//wwR5WQAAAAGSURBVAMAHnucQYIveGMAAAAASUVORK5CYII=`;
+const pngBack = `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABHUlEQVR4AeyTYQ7CIAyFqTfRH3r/47gfepT5nhlBEFo6thiTLX2B0kI/uu0UfvwcAEcH/rIDM34cTQj3m7cDM56gCaUJh6HPPACoa5+NJFa2E5kFeQCQnkxEgkhSivhmqwF400/5yqbs1QDpiLFZDwDfJ5W1XCS1XySfL0jcQy1ufbAA5sf1GkaEsiqEBYD9+5oG8L79aHl2D2c0u6ABYN+3ne/3QJURrlHluuW7AZ63W6DKg7lGleuW7wawDvTGWwCbvP8Io30HLYC4Vx0v0xQoNckIDgHwZpRRQw0PAagndwYPgKMDzQ7w99pSrW+yBSDYEIVp1WI8jtUkLMY4R7i5tQDyrB29HgCS11Ri1XK4VuZlfg9AtsHrWPkvAAAA///hcxfaAAAABklEQVQDAP3gjkHPV7F3AAAAAElFTkSuQmCC`;
+const pngMale = pngFront;
+const pngFemale = pngFront; // We can use the same base for palette swapping if needed
 const svgBoundary = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><defs><linearGradient id="wall" x1="0" y1="0" x2="0" y2="32"><stop offset="0%" stop-color="#374151"/><stop offset="100%" stop-color="#111827"/></linearGradient></defs><rect width="32" height="32" fill="url(#wall)"/><rect x="2" y="2" width="28" height="12" fill="#4b5563" rx="2" stroke="#1f2937"/><rect x="2" y="18" width="28" height="12" fill="#4b5563" rx="2" stroke="#1f2937"/></svg>`;
 const svgPlayer = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><defs><radialGradient id="pSh" cx="50%" cy="80%" r="40%"><stop offset="0%" stop-color="rgba(0,0,0,0.6)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/></radialGradient><linearGradient id="pBd" x1="0" y1="0" x2="0" y2="32"><stop offset="0%" stop-color="#333333"/><stop offset="100%" stop-color="#000000"/></linearGradient></defs><ellipse cx="16" cy="28" rx="12" ry="4" fill="url(#pSh)"/><rect x="8" y="12" width="16" height="16" rx="6" fill="url(#pBd)" stroke="#000000"/><circle cx="16" cy="10" r="8" fill="#fbbf24" stroke="#b45309"/><circle cx="13" cy="9" r="2" fill="#fff"/><circle cx="19" cy="9" r="2" fill="#fff"/><circle cx="13" cy="9" r="1" fill="#000"/><circle cx="19" cy="9" r="1" fill="#000"/><path d="M 5 15 L 14 15 L 14 22 C 14 26 9.5 28 9.5 28 C 9.5 28 5 26 5 22 Z" fill="#111111" stroke="#333333" stroke-width="1"/><polygon points="7,17 12,17 9.5,23" fill="#fbbf24"/></svg>`;
 const svgPlayerBack = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><defs><radialGradient id="pSh" cx="50%" cy="80%" r="40%"><stop offset="0%" stop-color="rgba(0,0,0,0.6)"/><stop offset="100%" stop-color="rgba(0,0,0,0)"/></radialGradient><linearGradient id="pBd" x1="0" y1="0" x2="0" y2="32"><stop offset="0%" stop-color="#333333"/><stop offset="100%" stop-color="#000000"/></linearGradient></defs><ellipse cx="16" cy="28" rx="12" ry="4" fill="url(#pSh)"/><rect x="8" y="12" width="16" height="16" rx="6" fill="url(#pBd)" stroke="#000000"/><circle cx="16" cy="10" r="8" fill="#fbbf24" stroke="#b45309"/><path d="M 7 10 C 7 3, 25 3, 25 10 C 25 17, 20 20, 16 20 C 12 20, 7 17, 7 10 Z" fill="#451a03"/><path d="M 7 10 L 6 15 L 10 13 L 12 18 L 16 15 L 19 19 L 22 14 L 26 16 L 25 10 Z" fill="#451a03"/><path d="M 5 15 L 14 15 L 14 22 C 14 26 9.5 28 9.5 28 C 9.5 28 5 26 5 22 Z" fill="#111111" stroke="#333333" stroke-width="1"/></svg>`;
@@ -30,6 +34,7 @@ const mfdb: Record<string, any> = {
       ["AssetBush", "assets/bush.bejson", 1], ["AssetChest", "assets/chest.bejson", 1], ["AssetSword", "assets/sword.bejson", 1],
       ["AssetWoodWall", "assets/wood_wall.bejson", 1], ["AssetRoof", "assets/roof.bejson", 1], ["AssetAppleTree", "assets/apple_tree.bejson", 1], ["AssetStonePath", "assets/stone_path.bejson", 1],
       ["AssetCaveWall", "assets/cave_wall.bejson", 1], ["AssetCaveFloor", "assets/cave_floor.bejson", 1], ["AssetPuppy", "assets/puppy.bejson", 1],
+      ["AssetNpcGeneric1", "assets/npc_generic_1.bejson", 1], ["AssetNpcGeneric1Back", "assets/npc_generic_1_back.bejson", 1],
       ["Level", "data/level.bejson", 2], ["Actor", "data/actor.bejson", 2], ["Portal", "data/portal.bejson", 2], ["Items", "data/items.bejson", 2]
     ]
   },
@@ -49,6 +54,8 @@ const mfdb: Record<string, any> = {
   "assets/cave_wall.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetCaveWall"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgCaveWall)] ] },
   "assets/cave_floor.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetCaveFloor"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgCaveFloor)] ] },
   "assets/puppy.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetPuppy"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgPuppy)] ] },
+  "assets/npc_generic_1.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetNpcGeneric1"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [pngFront] ] },
+  "assets/npc_generic_1_back.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetNpcGeneric1Back"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [pngBack] ] },
   "data/object_rules.bejson": {
     Format: "BEJSON", Format_Version: "104", Format_Creator: "Elton Boehnen", Parent_Hierarchy: "104a.mfdb.bejson",
     Records_Type: ["ObjectRules"],
@@ -74,7 +81,10 @@ const mfdb: Record<string, any> = {
     Values: [
       ["player", 150, 10, 5, 120, 0, "#111111", 3, 20, 5, 2, 30, 50, false], ["enemy", 30, 5, 2, 60, 20, "#ef4444", 0, 0, 0, 0, 20, 0, false],
       ["enemy_boss", 150, 15, 8, 50, 100, "#b91c1c", 0, 0, 0, 0, 30, 0, true], ["chest", 1, 0, 0, 0, 0, "#92400e", 0, 0, 0, 0, 0, 0, false],
-      ["npc", 100, 0, 10, 0, 0, "#10b981", 0, 0, 0, 0, 0, 0, false], ["puppy", 100, 0, 10, 0, 0, "#d97706", 0, 0, 0, 0, 0, 0, false]
+      ["npc", 100, 0, 10, 0, 0, "#10b981", 0, 0, 0, 0, 0, 0, false], ["puppy", 100, 0, 10, 0, 0, "#d97706", 0, 0, 0, 0, 0, 0, false],
+      ["npc_generic_1", 50, 0, 2, 50, 0, "#3b82f6", 0, 0, 0, 0, 0, 0, false],
+      ["npc_generic_friendly", 50, 0, 2, 50, 0, "#808080", 0, 0, 0, 0, 0, 0, false],
+      ["enemy_generic_hostile", 45, 6, 1, 55, 10, "#555555", 0, 0, 0, 0, 400, 0, false]
     ]
   },
   "data/level.bejson": {
@@ -102,14 +112,15 @@ const mfdb: Record<string, any> = {
     Values: [
       ["potion", "Health Potion", "heal", 50, "#ef4444", "potions", "none", 0, 0],
       ["atk_boost", "Attack Potion", "boost_atk", 5, "#f59e0b", "atk_potions", "none", 0, 0],
-      ["wep_rusty", "Rusty Sword", "equipment", 0, "#9ca3af", "weapon", "weapon", 2, 0],
-      ["wep_iron", "Iron Broadsword", "equipment", 0, "#d1d5db", "weapon", "weapon", 6, 0],
-      ["wep_steel", "Steel Katana", "equipment", 0, "#f3f4f6", "weapon", "weapon", 12, 0],
-      ["wep_mithril", "Mithril Blade", "equipment", 0, "#60a5fa", "weapon", "weapon", 25, 0],
+      ["wep_rusty", "Rusty Sword", "equipment", 0, "#9ca3af", "weapon", "sword", 2, 0],
+      ["wep_iron", "Iron Broadsword", "equipment", 0, "#d1d5db", "weapon", "sword", 6, 0],
+      ["wep_steel", "Steel Katana", "equipment", 0, "#f3f4f6", "weapon", "sword", 12, 0],
+      ["wep_mithril", "Mithril Blade", "equipment", 0, "#60a5fa", "weapon", "sword", 25, 0],
       ["arm_cloth", "Cloth Tunic", "equipment", 0, "#d97706", "armor", "armor", 0, 2],
       ["arm_leather", "Leather Cuirass", "equipment", 0, "#b45309", "armor", "armor", 0, 5],
       ["arm_chain", "Chainmail", "equipment", 0, "#9ca3af", "armor", "armor", 0, 12],
-      ["arm_plate", "Iron Plate", "equipment", 0, "#4b5563", "armor", "armor", 0, 20]
+      ["arm_plate", "Iron Plate", "equipment", 0, "#4b5563", "armor", "armor", 0, 20],
+      ["tool_boom", "Boomerang", "equipment", 0, "#8b4513", "boomerang", "tool", 2, 0]
     ]
   },
   "data/actor.bejson": {
@@ -117,7 +128,7 @@ const mfdb: Record<string, any> = {
     Fields: [ { name: "actor_id", type: "string" }, { name: "level_id_fk", type: "string" }, { name: "type", type: "string" }, { name: "start_x", type: "number" }, { name: "start_y", type: "number" }, { name: "health", type: "integer" }, { name: "atk", type: "integer" }, { name: "def", type: "integer" }, { name: "name", type: "string" } ],
     Values: [
       ["player_1", "village", "player", 10, 12, 150, 10, 5, "boehnenelton2024"], 
-      ["npc_1", "village", "npc", 7, 10, 100, 0, 10, "VILLAGER"],
+      ["npc_1", "village", "npc_female_f1", 7, 10, 100, 0, 10, "VILLAGER"],
       ["boss_1", "cave", "enemy_boss", 10, 10, 150, 15, 8, "VALERIUS"],
       ["puppy", "cave", "puppy", 10, 5, 100, 0, 10, "PUPPY"],
       ["chest_1", "cave", "chest", 15, 15, 1, 0, 0, "CHEST"],
@@ -134,82 +145,120 @@ const mfdb: Record<string, any> = {
   },
 };
 
-  const addChunkEntry = (db: any, levelId: string, cx: number, cy: number) => {
-    const chunkName = `data/${levelId}_tile_chunk_${cx}_${cy}.bejson`;
-    if (!db[chunkName]) {
-      db[chunkName] = {
-        Format: "BEJSON", Format_Version: "104", Format_Creator: "Elton Boehnen", Parent_Hierarchy: "104a.mfdb.bejson", Records_Type: [`Tile_${levelId}_${cx}_${cy}`],
-        Fields: [ { name: "tile_id", type: "string" }, { name: "level_id_fk", type: "string" }, { name: "x", type: "integer" }, { name: "y", type: "integer" }, { name: "terrain_type", type: "string" }, { name: "object_type", type: "string" } ],
-        Values: [] as any[]
-      };
-      
-      const manifestRow = [`Tile_${levelId}_${cx}_${cy}`, chunkName, 3];
-      db["104a.mfdb.bejson"].Values.push(manifestRow);
-    }
-  };
+// Generic NPCs Generation
+const npcColors = [
+  { id: 'm1', shirt: '#3b82f6', female: false, hue: 0 },
+  { id: 'm2', shirt: '#ef4444', female: false, hue: 45 },
+  { id: 'm3', shirt: '#10b981', female: false, hue: 90 },
+  { id: 'm4', shirt: '#8b5cf6', female: false, hue: 180 },
+  { id: 'm5', shirt: '#64748b', female: false, hue: 270 },
+  { id: 'f1', shirt: '#ec4899', female: true, hue: 0 },
+  { id: 'f2', shirt: '#06b6d4', female: true, hue: 60 },
+  { id: 'f3', shirt: '#eab308', female: true, hue: 120 },
+  { id: 'f4', shirt: '#f8fafc', female: true, hue: 200 },
+  { id: 'f5', shirt: '#7c3aed', female: true, hue: 300 },
+];
 
-  const levels = ["village", "path", "cave"];
+npcColors.forEach(n => {
+  const type = n.female ? 'npc_female' : 'npc_male';
+  const id = `${type}_${n.id}`;
+  const baseImg = n.female ? pngFemale : pngMale;
   
-  levels.forEach(lvl => {
-     [0, 1].forEach(cx => {
-       [0, 1].forEach(cy => {
-          addChunkEntry(mfdb, lvl, cx, cy);
-       });
-     });
-  });
+  const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <defs>
+      <filter id="hue_${id}"><feColorMatrix type="hueRotate" values="${n.hue}"/></filter>
+    </defs>
+    <image href="${baseImg}" width="32" height="32" filter="url(#hue_${id})"/>
+  </svg>`;
 
-  // Generate Village
-  for (let y = 0; y < 20; y++) {
-    for (let x = 0; x < 20; x++) {
-      let terrain = "grass";
-      if (x === 0 || x === 19 || y === 0 || (y === 19 && x !== 10)) {
-        terrain = "boundary";
-      } else if (x >= 8 && x <= 12 && y >= 7 && y <= 11) {
-        if (x === 8 || x === 12 || y === 7 || y === 11) {
-          terrain = (x === 10 && y === 11) ? "stone_path" : "wood_wall";
-        } else {
-          terrain = "roof";
-        }
-      } else if (x === 10 && y > 11 && y < 19) {
-        terrain = "stone_path";
-      } else if ((x > 12 && x < 18 && y > 14) || (x < 6 && y > 2 && y < 8)) {
-        terrain = Math.random() > 0.5 ? "apple_tree" : "grass";
-      }
-      const cx = Math.floor(x / 10); const cy = Math.floor(y / 10);
-      mfdb[`data/village_tile_chunk_${cx}_${cy}.bejson`].Values.push([ `t_${x}_${y}`, "village", x, y, terrain, null ]);
-    }
+  const assetId = id.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
+  const assetIdBack = assetId + "Back";
+  
+  mfdb[`assets/${id}.bejson`] = { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: [`Asset${assetId}`], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgContent)] ] };
+  mfdb[`assets/${id}_back.bejson`] = { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: [`Asset${assetIdBack}`], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgContent)] ] };
+  
+  mfdb["104a.mfdb.bejson"].Values.push([`Asset${assetId}`, `assets/${id}.bejson`, 1]);
+  mfdb["104a.mfdb.bejson"].Values.push([`Asset${assetIdBack}`, `assets/${id}_back.bejson`, 1]);
+  
+  mfdb["data/actor_stats.bejson"].Values.push([id, 50, 0, 2, 50, 0, n.shirt, 0, 0, 0, 0, 0, 0, false]);
+});
+
+const addChunkEntry = (db: any, levelId: string, cx: number, cy: number) => {
+  const chunkName = `data/${levelId}_tile_chunk_${cx}_${cy}.bejson`;
+  if (!db[chunkName]) {
+    db[chunkName] = {
+      Format: "BEJSON", Format_Version: "104", Format_Creator: "Elton Boehnen", Parent_Hierarchy: "104a.mfdb.bejson", Records_Type: [`Tile_${levelId}_${cx}_${cy}`],
+      Fields: [ { name: "tile_id", type: "string" }, { name: "level_id_fk", type: "string" }, { name: "x", type: "integer" }, { name: "y", type: "integer" }, { name: "terrain_type", type: "string" }, { name: "object_type", type: "string" } ],
+      Values: [] as any[]
+    };
+    
+    const manifestRow = [`Tile_${levelId}_${cx}_${cy}`, chunkName, 3];
+    db["104a.mfdb.bejson"].Values.push(manifestRow);
   }
+};
 
-  // Generate Path
-  for (let y = 0; y < 20; y++) {
-    for (let x = 0; x < 20; x++) {
-      let terrain = "grass";
-      if (x === 0 || x === 19 || (y === 0 && x !== 10) || (y === 19 && x !== 10)) {
-        terrain = "boundary";
-      } else if (x >= 9 && x <= 11) {
-        terrain = "stone_path"; // wide path down the middle
+const levels = ["village", "path", "cave"];
+
+levels.forEach(lvl => {
+    [0, 1].forEach(cx => {
+      [0, 1].forEach(cy => {
+        addChunkEntry(mfdb, lvl, cx, cy);
+      });
+    });
+});
+
+// Generate Village
+for (let y = 0; y < 20; y++) {
+  for (let x = 0; x < 20; x++) {
+    let terrain = "grass";
+    if (x === 0 || x === 19 || y === 0 || (y === 19 && x !== 10)) {
+      terrain = "boundary";
+    } else if (x >= 8 && x <= 12 && y >= 7 && y <= 11) {
+      if (x === 8 || x === 12 || y === 7 || y === 11) {
+        terrain = (x === 10 && y === 11) ? "stone_path" : "wood_wall";
       } else {
-        terrain = Math.random() > 0.5 ? "bush" : "rocky";
+        terrain = "roof";
       }
-      const cx = Math.floor(x / 10); const cy = Math.floor(y / 10);
-      mfdb[`data/path_tile_chunk_${cx}_${cy}.bejson`].Values.push([ `t_${x}_${y}`, "path", x, y, terrain, null ]);
+    } else if (x === 10 && y > 11 && y < 19) {
+      terrain = "stone_path";
+    } else if ((x > 12 && x < 18 && y > 14) || (x < 6 && y > 2 && y < 8)) {
+      terrain = Math.random() > 0.5 ? "apple_tree" : "grass";
     }
+    const cx = Math.floor(x / 10); const cy = Math.floor(y / 10);
+    mfdb[`data/village_tile_chunk_${cx}_${cy}.bejson`].Values.push([ `t_${x}_${y}`, "village", x, y, terrain, null ]);
   }
+}
 
-  // Generate Cave
-  for (let y = 0; y < 20; y++) {
-    for (let x = 0; x < 20; x++) {
-      let terrain = "cave_floor";
-      if (x === 0 || x === 19 || (y === 0 && x !== 10) || y === 19) {
-        terrain = "cave_wall";
-      } else if (Math.random() > 0.8 && !(x > 8 && x < 12 && y > 8 && y < 12) && !(x === 10 && y < 3)) {
-        terrain = "cave_wall"; // some random stalagmites, but clear center and entrance
-      }
-      if (x === 10 && y === 0) terrain = "cave_floor"; // Entrance
-      const cx = Math.floor(x / 10); const cy = Math.floor(y / 10);
-      mfdb[`data/cave_tile_chunk_${cx}_${cy}.bejson`].Values.push([ `t_${x}_${y}`, "cave", x, y, terrain, null ]);
+// Generate Path
+for (let y = 0; y < 20; y++) {
+  for (let x = 0; x < 20; x++) {
+    let terrain = "grass";
+    if (x === 0 || x === 19 || (y === 0 && x !== 10) || (y === 19 && x !== 10)) {
+      terrain = "boundary";
+    } else if (x >= 9 && x <= 11) {
+      terrain = "stone_path"; // wide path down the middle
+    } else {
+      terrain = Math.random() > 0.5 ? "bush" : "rocky";
     }
+    const cx = Math.floor(x / 10); const cy = Math.floor(y / 10);
+    mfdb[`data/path_tile_chunk_${cx}_${cy}.bejson`].Values.push([ `t_${x}_${y}`, "path", x, y, terrain, null ]);
   }
+}
 
-  return mfdb;
+// Generate Cave
+for (let y = 0; y < 20; y++) {
+  for (let x = 0; x < 20; x++) {
+    let terrain = "cave_floor";
+    if (x === 0 || x === 19 || (y === 0 && x !== 10) || y === 19) {
+      terrain = "cave_wall";
+    } else if (Math.random() > 0.8 && !(x > 8 && x < 12 && y > 8 && y < 12) && !(x === 10 && y < 3)) {
+      terrain = "cave_wall"; // some random stalagmites, but clear center and entrance
+    }
+    if (x === 10 && y === 0) terrain = "cave_floor"; // Entrance
+    const cx = Math.floor(x / 10); const cy = Math.floor(y / 10);
+    mfdb[`data/cave_tile_chunk_${cx}_${cy}.bejson`].Values.push([ `t_${x}_${y}`, "cave", x, y, terrain, null ]);
+  }
+}
+
+return mfdb;
 };
