@@ -1,3 +1,16 @@
+/**
+ * Library:      bejson_physics.ts
+ * Family:       Gaming
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  2D/3D physics calculation engine for BEJSON-based simulations.
+ */
+
 // bejson_physics.ts
 import { BEJSONDocument, createEmpty104 } from "./index";
 
@@ -32,8 +45,9 @@ export class BEJSONPhysics {
   applyImpulse(id: string, ix: number, iy: number) {
     const b = this.bodies.Values.find(v => v[0] === id);
     if (!b) return;
-    (b[5] as number) += ix;
-    (b[6] as number) += iy;
+    const mass = (b[8] as number) || 1;
+    (b[5] as number) += ix / mass;
+    (b[6] as number) += iy / mass;
   }
 
   moveBody(id: string, dx: number, dy: number, staticColliders: any[] = []) {
@@ -42,31 +56,21 @@ export class BEJSONPhysics {
 
     const oldX = b[1] as number;
     (b[1] as number) += dx;
-    let colX = this._checkStaticCollisions(b, staticColliders);
-    if (colX) {
-        if (colX.overlapY < 5) {
-            (b[2] as number) += colX.pushY;
-        } else {
-            (b[1] as number) = oldX;
-        }
+    if (this._checkStaticCollisions(b, staticColliders)) {
+        (b[1] as number) = oldX;
     }
 
     const oldY = b[2] as number;
     (b[2] as number) += dy;
-    let colY = this._checkStaticCollisions(b, staticColliders);
-    if (colY) {
-        if (colY.overlapX < 5) {
-            (b[1] as number) += colY.pushX;
-        } else {
-            (b[2] as number) = oldY;
-        }
+    if (this._checkStaticCollisions(b, staticColliders)) {
+        (b[2] as number) = oldY;
     }
   }
 
 
   step(dt: number, staticColliders: any[] = []) {
     const values = this.bodies.Values;
-    // 1. Integrate & Resolve Static
+    // 1. Integration & Resolve Static
     for (let i = 0; i < values.length; i++) {
       const b = values[i];
       if (b[7]) continue; // isStatic
@@ -81,27 +85,17 @@ export class BEJSONPhysics {
       // X Axis
       const oldX = b[1] as number;
       (b[1] as number) += (b[5] as number) * dt;
-      let colX = this._checkStaticCollisions(b, staticColliders);
-      if (colX) {
-          if (colX.overlapY < 5) {
-              (b[2] as number) += colX.pushY;
-          } else {
-              (b[1] as number) = oldX;
-              (b[5] as number) = 0;
-          }
+      if (this._checkStaticCollisions(b, staticColliders)) {
+          (b[1] as number) = oldX;
+          (b[5] as number) = 0;
       }
 
       // Y Axis
       const oldY = b[2] as number;
       (b[2] as number) += (b[6] as number) * dt;
-      let colY = this._checkStaticCollisions(b, staticColliders);
-      if (colY) {
-          if (colY.overlapX < 5) {
-              (b[1] as number) += colY.pushX;
-          } else {
-              (b[2] as number) = oldY;
-              (b[6] as number) = 0;
-          }
+      if (this._checkStaticCollisions(b, staticColliders)) {
+          (b[2] as number) = oldY;
+          (b[6] as number) = 0;
       }
     }
 
@@ -117,35 +111,19 @@ export class BEJSONPhysics {
     }
   }
 
-  private _checkStaticCollisions(b: any[], colliders: any[]): any {
+  private _checkStaticCollisions(b: any[], colliders: any[]) {
     for (const c of colliders) {
       const cx = Array.isArray(c) ? c[0] : c.x;
       const cy = Array.isArray(c) ? c[1] : c.y;
       const cw = Array.isArray(c) ? c[2] : (c.w || c.width);
       const ch = Array.isArray(c) ? c[3] : (c.h || c.height);
 
-      const b_x = b[1] as number;
-      const b_y = b[2] as number;
-      const b_w = b[3] as number;
-      const b_h = b[4] as number;
-
-      if (b_x < cx + cw && b_x + b_w > cx && 
-          b_y < cy + ch && b_y + b_h > cy) {
-            
-        const overlapX1 = (b_x + b_w) - cx;
-        const overlapX2 = (cx + cw) - b_x;
-        const overlapX = Math.min(overlapX1, overlapX2);
-        const pushX = overlapX1 < overlapX2 ? -overlapX1 : overlapX2;
-
-        const overlapY1 = (b_y + b_h) - cy;
-        const overlapY2 = (cy + ch) - b_y;
-        const overlapY = Math.min(overlapY1, overlapY2);
-        const pushY = overlapY1 < overlapY2 ? -overlapY1 : overlapY2;
-
-        return { hit: true, overlapX, overlapY, pushX, pushY };
+      if ((b[1] as number) < cx + cw && (b[1] as number) + (b[3] as number) > cx && 
+          (b[2] as number) < cy + ch && (b[2] as number) + (b[4] as number) > cy) {
+        return true;
       }
     }
-    return null;
+    return false;
   }
 
   private _checkAABB(a: any[], b: any[]) {
@@ -158,9 +136,31 @@ export class BEJSONPhysics {
   private _resolveCollision(a: any[], b: any[]) {
     if (a[7] && b[7]) return; // both static
     
-    // Simple push-apart logic would go here, 
-    // for now we just swap velocities for dynamic-dynamic
-    const tempVx = a[5]; a[5] = b[5]; b[5] = tempVx;
-    const tempVy = a[6]; a[6] = b[6]; b[6] = tempVy;
+    const m1 = (a[8] as number) || 1;
+    const m2 = (b[8] as number) || 1;
+    const totalMass = m1 + m2;
+
+    const v1x = a[5] as number;
+    const v1y = a[6] as number;
+    const v2x = b[5] as number;
+    const v2y = b[6] as number;
+
+    if (a[7]) { // a is static
+        (b[5] as number) = -v2x; 
+        (b[6] as number) = -v2y;
+        return;
+    }
+    if (b[7]) { // b is static
+        (a[5] as number) = -v1x; 
+        (a[6] as number) = -v1y;
+        return;
+    }
+
+    // Elastic collision formula for 1D applied to each axis
+    (a[5] as number) = ((v1x * (m1 - m2)) + (2 * m2 * v2x)) / totalMass;
+    (b[5] as number) = ((v2x * (m2 - m1)) + (2 * m1 * v1x)) / totalMass;
+
+    (a[6] as number) = ((v1y * (m1 - m2)) + (2 * m2 * v2y)) / totalMass;
+    (b[6] as number) = ((v2y * (m2 - m1)) + (2 * m1 * v1y)) / totalMass;
   }
 }

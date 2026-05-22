@@ -1,4 +1,4 @@
-import { VanillaGame } from './vanilla/switch_game';
+import { VanillaGame } from './vanilla/bejson_game';
 
 export class VanillaGameEngine {
     public canvas: HTMLCanvasElement;
@@ -28,8 +28,8 @@ export class VanillaGameEngine {
     }
 
     handleInput(code: string, isDown: boolean) {
-        // Fallback for passing React events directly into SwitchInput keys state
-        // Map common e.code to e.key for SwitchInput bindings
+        // Fallback for passing React events directly into BejsonInput keys state
+        // Map common e.code to e.key for BejsonInput bindings
         let key = code;
         if (code === 'KeyW') key = 'w';
         if (code === 'KeyA') key = 'a';

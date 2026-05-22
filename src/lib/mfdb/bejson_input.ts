@@ -1,3 +1,16 @@
+/**
+ * Library:      bejson_input.ts
+ * Family:       Gaming
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  User input mapping and handling for interactive BEJSON applications.
+ */
+
 // bejson_input.ts
 export class BEJSONInput {
   public deadzone: number;
@@ -51,17 +64,28 @@ export class BEJSONInput {
       const tx = t.clientX - rect.left;
       const ty = t.clientY - rect.top;
 
-      // Check Joystick
+      // Check Joystick (Floating Joystick / Dynamic Anchor fix)
       const j = this.controls.joystick;
       const distJ = Math.sqrt((tx - j.x)**2 + (ty - j.y)**2);
-      if (distJ < j.radius * 2) {
+      
+      if (distJ < j.radius * 2 || j.active) {
         j.active = true;
-        const dx = tx - j.x;
-        const dy = ty - j.y;
-        const dist = Math.sqrt(dx*dx + dy*dy);
+        let dx = tx - j.x;
+        let dy = ty - j.y;
+        let dist = Math.sqrt(dx*dx + dy*dy);
         const limit = j.radius;
-        j.handleX = dist > limit ? (dx/dist)*limit : dx;
-        j.handleY = dist > limit ? (dy/dist)*limit : dy;
+
+        if (dist > limit) {
+          const angle = Math.atan2(dy, dx);
+          j.x = tx - Math.cos(angle) * limit;
+          j.y = ty - Math.sin(angle) * limit;
+          dx = tx - j.x;
+          dy = ty - j.y;
+          dist = limit;
+        }
+
+        j.handleX = dx;
+        j.handleY = dy;
         this.touch.vector.x = j.handleX / limit;
         this.touch.vector.y = j.handleY / limit;
       }

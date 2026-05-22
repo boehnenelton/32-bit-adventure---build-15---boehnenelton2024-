@@ -1,20 +1,16 @@
-/*
-Library:     bejson_validators.ts
-MFDB Version: 1.3.1
-Format_Creator: Elton Boehnen
-Status:      OFFICIAL - v1.3.1
-Date:        2026-05-06
-*/
-
 /**
- * Library:     bejson_validators.ts
- * Jurisdiction: ["TYPESCRIPT", "CORE_COMMAND"]
- * Status:      OFFICIAL — Core-Command/Lib (v1.1)
- * Author:      Elton Boehnen
- * Version:     1.1 (OFFICIAL)
- * Date:        2026-04-23
- * Description: Core-Command library component.
+ * Library:      bejson_validators.ts
+ * Family:       Core
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  Structural integrity checker for positional values and mandatory keys.
  */
+
 import {
   BEJSONDocument,
   BEJSONField,
@@ -152,7 +148,7 @@ function _checkTopLevel(doc: BEJSONDocument, r: ValidationResult): void {
 
   const validVersions = ["104", "104a", "104db"];
   if (!validVersions.includes(doc.Format_Version as string)) {
-    _err(r, E.INVALID_FORMAT_VERSION, "Unknown Format_Version: \"" + doc.Format_Version + "\".", "Format_Version");
+    _err(r, E.INVALID_FORMAT_VERSION, "Format_Version must be one of " + JSON.stringify(validVersions) + ", got \"" + doc.Format_Version + "\".", "Format_Version");
   }
 
   if (doc.Format_Creator !== "Elton Boehnen") {
@@ -258,7 +254,7 @@ function _check104Specific(doc: BEJSONDocument, r: ValidationResult): void {
 
   // No custom top-level keys (Parent_Hierarchy is the only exception)
   for (const key of Object.keys(doc)) {
-    if (!FORBIDDEN_CUSTOM_KEYS_104.has(key as typeof MANDATORY_KEYS[number]) && key !== "Parent_Hierarchy") {
+    if (!FORBIDDEN_CUSTOM_KEYS_104.has(key as any) && key !== "Parent_Hierarchy") {
       _err(r, E.FORBIDDEN_CUSTOM_KEY, "BEJSON 104 forbids custom top-level key: \"" + key + "\".", key);
     }
   }
@@ -293,7 +289,7 @@ function _check104aSpecific(doc: BEJSONDocument, r: ValidationResult): void {
 
   // Custom keys: must be PascalCase, must not collide with mandatory keys
   for (const key of Object.keys(doc)) {
-    if (FORBIDDEN_CUSTOM_KEYS_104.has(key as typeof MANDATORY_KEYS[number])) continue;
+    if (FORBIDDEN_CUSTOM_KEYS_104.has(key as any)) continue;
     if (key === "Parent_Hierarchy") {
       // Parent_Hierarchy is not defined for 104a but not strictly forbidden;
       // emit a warning rather than an error since the spec is silent here.
@@ -318,7 +314,7 @@ function _check104dbSpecific(doc: BEJSONDocument, r: ValidationResult): void {
 
   // No custom top-level keys (not even Parent_Hierarchy)
   for (const key of Object.keys(doc)) {
-    if (!FORBIDDEN_CUSTOM_KEYS_104.has(key as typeof MANDATORY_KEYS[number])) {
+    if (!FORBIDDEN_CUSTOM_KEYS_104.has(key as any)) {
       _err(r, E.FORBIDDEN_CUSTOM_KEY, "BEJSON 104db forbids custom top-level key: \"" + key + "\".", key);
     }
   }

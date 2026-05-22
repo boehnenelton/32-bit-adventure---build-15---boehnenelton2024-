@@ -1,4 +1,4 @@
-export const ENGINE_VERSION = "1.126.0";
+export const ENGINE_VERSION = "1.127.0";
 
 export class GameEngine {
   canvas: HTMLCanvasElement; ctx: CanvasRenderingContext2D; mfdb: Record<string, any>;
@@ -73,9 +73,13 @@ export class GameEngine {
     Object.keys(this.mfdb).forEach(filename => {
       if (filename.startsWith("assets/") && filename.endsWith(".bejson")) {
         const fileContent = this.mfdb[filename];
-        if (fileContent.Records_Type && fileContent.Records_Type[0]?.startsWith("Asset") && fileContent.Values && fileContent.Values.length > 0) {
-          const spriteId = fileContent.Asset_Id || filename.split('/').pop()?.split('.')[0];
-          const dataUri = fileContent.Values[0][0];
+        if (fileContent.Records_Type && 
+            fileContent.Records_Type[0] && 
+            fileContent.Records_Type[0].startsWith("Asset") && 
+            fileContent.Values && 
+            fileContent.Values.length > 0) {
+          const spriteId = fileContent.Values[0][0]; // asset_id is now the first field
+          const dataUri = fileContent.Values[0][1];  // data_uri is now the second field
           if (spriteId && dataUri) {
             this.sprites[spriteId] = dataUri; const img = new Image(); img.src = dataUri; this.loadedImages[spriteId] = img;
           }
@@ -499,7 +503,7 @@ export class GameEngine {
     this.player.vx = canMoveX ? totalVx : 0;
     this.player.vy = canMoveY ? totalVy : 0;
     
-    // Dampen pending knockback internally to simulate SwitchPhysics friction
+    // Dampen pending knockback internally to simulate BejsonPhysics friction
     this.player.pendingVx = (this.player.pendingVx || 0) * 0.9;
     this.player.pendingVy = (this.player.pendingVy || 0) * 0.9;
     if (Math.abs(this.player.pendingVx) < 1) this.player.pendingVx = 0;

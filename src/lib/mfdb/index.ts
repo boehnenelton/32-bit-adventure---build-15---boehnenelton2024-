@@ -1,20 +1,16 @@
-/*
-Library:     index.ts
-MFDB Version: 1.3.1
-Format_Creator: Elton Boehnen
-Status:      OFFICIAL - v1.3.1
-Date:        2026-05-06
-*/
-
 /**
- * Library:     index.ts
- * Jurisdiction: ["TYPESCRIPT", "CORE_COMMAND"]
- * Status:      OFFICIAL — Core-Command/Lib (v1.1)
- * Author:      Elton Boehnen
- * Version:     1.1 (OFFICIAL)
- * Date:        2026-04-23
- * Description: Core-Command library component.
+ * Library:      index.ts
+ * Family:       Core
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  Main entry point for TypeScript library family.
  */
+
 // Types & error classes
 export * from "./bejson_types";
 
@@ -59,3 +55,6 @@ export * from "./bejson_grid";
 export * from "./bejson_input";
 export * from "./bejson_physics";
 export * from "./bejson_renderer";
+
+// Schema management
+export * from "./bejson_schema";

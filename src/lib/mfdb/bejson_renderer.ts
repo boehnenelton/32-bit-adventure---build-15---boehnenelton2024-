@@ -1,3 +1,16 @@
+/**
+ * Library:      bejson_renderer.ts
+ * Family:       Gaming
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  Graphics rendering abstraction for BEJSON-based visuals.
+ */
+
 // bejson_renderer.ts
 export class BEJSONRenderer {
   public canvas: HTMLCanvasElement | null;

@@ -1,21 +1,16 @@
-/*
-Library:     mfdb_core.ts
-MFDB Version: 1.3.1
-Format_Creator: Elton Boehnen
-Status:      OFFICIAL - v1.3.1
-Date:        2026-05-06
-*/
-
 /**
- * Library:     mfdb_core.ts
- * Jurisdiction: ["TYPESCRIPT", "CORE_COMMAND"]
- * Status:      OFFICIAL — Core-Command/Lib (v1.2)
- * Author:      Elton Boehnen
- * Version:     1.2 (OFFICIAL) Archive Transport Update
- * Date:        2026-04-26
- * Description: MFDB Core definitions for TypeScript.
- *              v1.2 adds MFDBArchive support for .mfdb.zip handling.
+ * Library:      mfdb_core.ts
+ * Family:       Core
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  Multi-file database orchestrator managing manifests and entity synchronization.
  */
+
 import {
   BEJSONDocument,
   BEJSONField,
@@ -36,7 +31,7 @@ import {
 } from "./bejson_core";
 
 // ---------------------------------------------------------------------------
-// MFDBArchive Interface (v1.2)
+// MFDBArchive Interface (v1.3
 // ---------------------------------------------------------------------------
 
 /**
@@ -83,7 +78,7 @@ export function createManifest(opts: CreateManifestOptions): BEJSONDocument {
   }
 
   const customHeaders: Record<string, string> = {
-    MFDB_Version: opts.mfdb_version ?? "1.21",
+    MFDB_Version: opts.mfdb_version ?? "1.31",
     DB_Name: opts.db_name,
   };
   if (opts.db_description) customHeaders["DB_Description"] = opts.db_description;

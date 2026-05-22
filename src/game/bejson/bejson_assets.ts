@@ -1,3 +1,16 @@
+/**
+ * Library:      bejson_assets.ts
+ * Family:       Gaming
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  Game asset loader and manager for BEJSON-defined resources.
+ */
+
 // bejson_assets.ts
 import { BEJSONDocument, createEmpty104a } from "./index";
 

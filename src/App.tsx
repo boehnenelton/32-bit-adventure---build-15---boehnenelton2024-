@@ -47,7 +47,7 @@ export default function App() {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slasher Vanilla JS Engine</title>
+    <title>Sword Slasher Engine</title>
     <style>
         body { margin: 0; background: #000; color: #fff; font-family: sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; }
         canvas { border: 2px solid #333; image-rendering: pixelated; }
@@ -59,7 +59,7 @@ export default function App() {
     <canvas id="vanilla-canvas" width="640" height="480"></canvas>
     <div id="log">Loading game...</div>
     <script type="module">
-        import { VanillaGame } from './js/engine/switch_game.js';
+        import { VanillaGame } from './js/engine/bejson_game.js';
         
         async function boot() {
             try {
@@ -83,11 +83,11 @@ export default function App() {
     
     zip.file("README.md", "Slasher Engine - Vanilla JS Build\n\nRun this folder in a local web server (e.g. \`npx serve\` or \`python -m http.server\`) to see the game in action! The data folder contains the MFDB.\n\n");
     const blob = await zip.generateAsync({ type: "blob" });
-    saveAs(blob, "sword slasher standalone 116.zip");
+    saveAs(blob, "sword slasher standalone 131.zip");
   };
 
   const handleExportFullBundle = async () => {
-    const keySuffix = "116"; // Project Key Suffix
+    const keySuffix = "131"; // Project Key Suffix
     const zip = new JSZip();
     const rootFolder = zip.folder(`SwordSlasher_Build_${keySuffix}`);
     if (!rootFolder) return;
@@ -140,12 +140,12 @@ export default function App() {
 <body>
     <canvas id="game-canvas" width="640" height="480"></canvas>
     <div id="ui">
-        <div class="badge">ORIGIN: SWORD-SLASHER-116</div>
+        <div class="badge">ORIGIN: SWORD-SLASHER-131</div>
         <div id="error"></div>
     </div>
 
     <script type="module">
-        import { VanillaGame } from './js/engine/switch_game.js';
+        import { VanillaGame } from './js/engine/bejson_game.js';
         
         async function start() {
             try {
@@ -186,7 +186,7 @@ export default function App() {
       <div className="w-full h-12 ui-panel sm:hidden flex items-center justify-between px-4 fixed top-0 left-0 z-50 rounded-none border-x-0 border-t-0">
         <div className="flex items-center gap-2">
           <div className="w-6 h-6 bg-blue-600 rounded flex items-center justify-center font-black text-white text-xs shadow-md shadow-blue-500/50">32</div>
-          <span className="font-bold text-sm tracking-tight text-white drop-shadow">32-BIT ENGINE</span>
+          <span className="font-bold text-sm tracking-tight text-white drop-shadow">SWORD SLASHER</span>
         </div>
         <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-gray-400 hover:text-white p-2">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -199,7 +199,7 @@ export default function App() {
         <div className="p-4 border-b border-white/10 hidden sm:block">
           <div className="flex items-center gap-2">
             <div className="w-7 h-7 bg-gradient-to-tr from-blue-700 to-blue-400 border border-blue-400 shadow-[0_0_15px_rgba(96,165,250,0.5)] rounded flex items-center justify-center font-black text-white text-xs">32</div>
-            <span className="font-bold text-[15px] tracking-tight text-white drop-shadow-md">32-BIT ENGINE</span>
+            <span className="font-bold text-[15px] tracking-tight text-white drop-shadow-md">SWORD SLASHER</span>
           </div>
           <p className="text-[10px] text-blue-300 mt-2 font-mono uppercase tracking-widest whitespace-nowrap overflow-hidden text-ellipsis">MFDB v1.31 Architecture</p>
         </div>

@@ -27,7 +27,7 @@ export class BEJSONInput {
     }
   }
 
-  private _onKey(e: KeyboardEvent, isDown: boolean) {
+  public _onKey(e: { key: string }, isDown: boolean) {
     if (isDown && !this.keys[e.key]) this.justPressed[e.key] = true;
     this.keys[e.key] = isDown;
   }
@@ -128,6 +128,17 @@ export class BEJSONInput {
     const mag = Math.sqrt(vx * vx + vy * vy);
     if (mag > 1) { vx /= mag; vy /= mag; }
     return { x: vx, y: vy, action: this.justPressed['action'], cancel: this.justPressed['cancel'] };
+  }
+
+  public _isBoundJustPressed(binding: string): boolean {
+    const bindings: Record<string, string[]> = {
+      up: ['ArrowUp', 'w', 'W'], down: ['ArrowDown', 's', 'S'],
+      left: ['ArrowLeft', 'a', 'A'], right: ['ArrowRight', 'd', 'D'],
+      action: ['Enter', ' '], cancel: ['Escape', 'x', 'X'], menu: ['m', 'M', 'Tab']
+    };
+    const keys = bindings[binding];
+    if (!keys) return !!this.justPressed[binding]; // fallback for direct binding name
+    return keys.some(k => this.justPressed[k]);
   }
 
   public update() {

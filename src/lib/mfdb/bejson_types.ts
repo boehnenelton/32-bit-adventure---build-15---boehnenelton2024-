@@ -1,20 +1,16 @@
-/*
-Library:     bejson_types.ts
-MFDB Version: 1.3.1
-Format_Creator: Elton Boehnen
-Status:      OFFICIAL - v1.3.1
-Date:        2026-05-06
-*/
-
 /**
- * Library:     bejson_types.ts
- * Jurisdiction: ["TYPESCRIPT", "CORE_COMMAND"]
- * Status:      OFFICIAL — Core-Command/Lib (v1.1)
- * Author:      Elton Boehnen
- * Version:     1.1 (OFFICIAL)
- * Date:        2026-04-23
- * Description: Core-Command library component.
+ * Library:      bejson_types.ts
+ * Family:       Core
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  Type definitions and interface contracts for TypeScript libraries.
  */
+
 // ---------------------------------------------------------------------------
 // Primitive and union types
 // ---------------------------------------------------------------------------
@@ -56,7 +52,7 @@ export interface BEJSONField {
 
 export interface BEJSONDocument {
   Format: "BEJSON";
-  Format_Version: BEJSONVersion;
+  Format_Version: "104" | "104a" | "104db";
   Format_Creator: "Elton Boehnen";
   Records_Type: string[];
   Fields: BEJSONField[];
@@ -215,6 +211,8 @@ export const BEJSON_CORE_CODES = {
   WRITE_TYPE_MISMATCH: 26,
   
   UNSUPPORTED_OPERATION: 27,
+  ENCRYPTION_FAILED: 28,
+  DECRYPTION_FAILED: 29,
 } as const;
 
 export const MFDB_VALIDATION_CODES = {

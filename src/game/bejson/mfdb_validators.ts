@@ -1,19 +1,16 @@
-/*
-Library:     mfdb_validators.ts
-MFDB Version: 1.3.1
-Format_Creator: Elton Boehnen
-Status:      OFFICIAL - v1.3.1
-Date:        2026-05-06
-*/
-
 /**
- * Library:     mfdb_validators.ts
- * Jurisdiction: ["TYPESCRIPT", "CORE_COMMAND"]
- * Status:      OFFICIAL — Core-Command/Lib (v1.5)
- * Author:      Elton Boehnen
- * Version:     1.5 OFFICIAL
- * Date:        2026-04-23
+ * Library:      mfdb_validators.ts
+ * Family:       Core
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  Bidirectional path and manifest-entity relationship validator.
  */
+
 import {
   BEJSONDocument,
   BEJSONValue,
@@ -147,7 +144,7 @@ export function validateManifest(
       }
 
       // File existence (optional — caller must provide resolvedPaths)
-      if (options.resolvedPaths && !options.resolvedPaths.has(filePath)) {
+      if (options.resolvedPaths && !options.resolvedPaths.has(filePath as string)) {
         _emitError(r, E.ENTITY_FILE_NOT_FOUND,
           "file_path \"" + filePath + "\" does not exist on disk.", "file_path", i);
       }
@@ -229,6 +226,10 @@ export function validateEntityFile(
 
   // Bidirectional check: entity's declared path must equal what the manifest recorded
   if (options.entityRelativePath !== undefined && options.manifestRelativePath !== undefined) {
+    // The manifest says this entity lives at entityRelativePath.
+    // The entity's Parent_Hierarchy + its own path should resolve back to manifestRelativePath.
+    // We do a lightweight string-based check here — full path resolution is the caller's job.
+    // We emit a warning rather than an error because resolution is environment-dependent.
     if (typeof entity.Parent_Hierarchy === "string") {
       _emitWarning(r, E.BIDIRECTIONAL_PATH_FAILED,
         "Bidirectional path check: verify that \"" + options.entityRelativePath +

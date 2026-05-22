@@ -1,15 +1,15 @@
 /**
- * switch_game.js
+ * bejson_game.js
  * game1 aka the BEJSON Game Engine (#1)
  * Author: Elton Boehnen: Vanilla Game Wrapper (Build 116)
  * Date: 2026-05-16
  */
 
-import { SwitchEngine, ChunkManager } from './switch_core';
-import SwitchRenderer from './switch_renderer';
-import SwitchPhysics from './switch_physics';
-import SwitchInput from './switch_input';
-import SwitchEvents from './switch_events';
+import { CoreEngine as BejsonEngine, ChunkManager } from './lib_bejson_engine_core';
+import BejsonRenderer from './lib_bejson_renderer';
+import BejsonPhysics from './lib_bejson_physics';
+import BejsonInput from './lib_bejson_input';
+import BejsonEvents from './lib_bejson_events';
 
 export class VanillaGame {
     constructor(canvasId, mfdb) {
@@ -29,11 +29,11 @@ export class VanillaGame {
         this.tileSize = 32;
         this.camera = { x: 0, y: 0, width: 640, height: 480 };
 
-        this.engine = new SwitchEngine();
-        this.renderer = new SwitchRenderer(canvasId);
-        this.physics = new SwitchPhysics();
-        this.input = new SwitchInput();
-        this.events = new SwitchEvents(this);
+        this.engine = new BejsonEngine();
+        this.renderer = new BejsonRenderer(canvasId);
+        this.physics = new BejsonPhysics();
+        this.input = new BejsonInput();
+        this.events = new BejsonEvents(this);
 
         this.assets = {};
         this.sprites = {};
@@ -95,9 +95,13 @@ export class VanillaGame {
         Object.keys(this.mfdb).forEach(filename => {
             if (filename.startsWith("assets/") && filename.endsWith(".bejson")) {
                 const fileContent = this.mfdb[filename];
-                if (fileContent.Records_Type && fileContent.Records_Type[0]?.startsWith("Asset") && fileContent.Values && fileContent.Values.length > 0) {
-                    const spriteId = fileContent.Asset_Id || filename.split('/').pop().split('.')[0];
-                    const dataUri = fileContent.Values[0][0];
+                if (fileContent.Records_Type && 
+                    fileContent.Records_Type[0] && 
+                    fileContent.Records_Type[0].startsWith("Asset") && 
+                    fileContent.Values && 
+                    fileContent.Values.length > 0) {
+                    const spriteId = fileContent.Values[0][0]; // asset_id is now the first field
+                    const dataUri = fileContent.Values[0][1];  // data_uri is now the second field
                     if (spriteId && dataUri) {
                         this.sprites[spriteId] = dataUri;
                         const img = new Image(); img.src = dataUri; this.loadedImages[spriteId] = img;

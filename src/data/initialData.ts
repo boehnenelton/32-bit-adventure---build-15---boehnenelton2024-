@@ -29,33 +29,33 @@ const mfdb: Record<string, any> = {
       ["Events", "data/events.bejson", 0],
       ["ObjectRules", "data/object_rules.bejson", 0], ["ActorStats", "data/actor_stats.bejson", 0], 
       ["AssetBoundary", "assets/boundary.bejson", 1], ["AssetPlayer", "assets/player.bejson", 1],
-      ["AssetPlayerBack", "assets/player_back.bejson", 1],
-      ["AssetEnemy", "assets/enemy.bejson", 1], ["AssetGrass", "assets/grass.bejson", 1], ["AssetRocky", "assets/rocky.bejson", 1],
-      ["AssetBush", "assets/bush.bejson", 1], ["AssetChest", "assets/chest.bejson", 1], ["AssetSword", "assets/sword.bejson", 1],
-      ["AssetWoodWall", "assets/wood_wall.bejson", 1], ["AssetRoof", "assets/roof.bejson", 1], ["AssetAppleTree", "assets/apple_tree.bejson", 1], ["AssetStonePath", "assets/stone_path.bejson", 1],
+      ["AssetPlayerBack", "assets/player_back.bejson", 1], ["AssetEnemy", "assets/enemy.bejson", 1], 
+      ["AssetGrass", "assets/grass.bejson", 1], ["AssetRocky", "assets/rocky.bejson", 1], ["AssetBush", "assets/bush.bejson", 1],
+      ["AssetChest", "assets/chest.bejson", 1], ["AssetSword", "assets/sword.bejson", 1], ["AssetWoodWall", "assets/wood_wall.bejson", 1],
+      ["AssetRoof", "assets/roof.bejson", 1], ["AssetAppleTree", "assets/apple_tree.bejson", 1], ["AssetStonePath", "assets/stone_path.bejson", 1],
       ["AssetCaveWall", "assets/cave_wall.bejson", 1], ["AssetCaveFloor", "assets/cave_floor.bejson", 1], ["AssetPuppy", "assets/puppy.bejson", 1],
       ["AssetNpcGeneric1", "assets/npc_generic_1.bejson", 1], ["AssetNpcGeneric1Back", "assets/npc_generic_1_back.bejson", 1],
       ["Level", "data/level.bejson", 2], ["Actor", "data/actor.bejson", 2], ["Portal", "data/portal.bejson", 2], ["Items", "data/items.bejson", 2]
     ]
   },
-  "assets/boundary.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetBoundary"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgBoundary)] ] },
-  "assets/player.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetPlayer"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgPlayer)] ] },
-  "assets/player_back.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetPlayerBack"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgPlayerBack)] ] },
-  "assets/enemy.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetEnemy"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgEnemy)] ] },
-  "assets/grass.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetGrass"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgGrass)] ] },
-  "assets/rocky.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetRocky"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgRocky)] ] },
-  "assets/bush.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetBush"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgBush)] ] },
-  "assets/chest.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetChest"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgChest)] ] },
-  "assets/sword.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetSword"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgSword)] ] },
-  "assets/wood_wall.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetWoodWall"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgWoodWall)] ] },
-  "assets/roof.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetRoof"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgRoof)] ] },
-  "assets/apple_tree.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetAppleTree"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgAppleTree)] ] },
-  "assets/stone_path.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetStonePath"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgStonePath)] ] },
-  "assets/cave_wall.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetCaveWall"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgCaveWall)] ] },
-  "assets/cave_floor.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetCaveFloor"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgCaveFloor)] ] },
-  "assets/puppy.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetPuppy"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgPuppy)] ] },
-  "assets/npc_generic_1.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetNpcGeneric1"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [pngFront] ] },
-  "assets/npc_generic_1_back.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetNpcGeneric1Back"], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [pngBack] ] },
+  "assets/boundary.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetBoundary"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["boundary", encodeSVG(svgBoundary)] ] },
+  "assets/player.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetPlayer"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["player", encodeSVG(svgPlayer)] ] },
+  "assets/player_back.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetPlayerBack"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["player_back", encodeSVG(svgPlayerBack)] ] },
+  "assets/enemy.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetEnemy"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["enemy", encodeSVG(svgEnemy)] ] },
+  "assets/grass.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetGrass"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["grass", encodeSVG(svgGrass)] ] },
+  "assets/rocky.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetRocky"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["rocky", encodeSVG(svgRocky)] ] },
+  "assets/bush.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetBush"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["bush", encodeSVG(svgBush)] ] },
+  "assets/chest.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetChest"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["chest", encodeSVG(svgChest)] ] },
+  "assets/sword.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetSword"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["sword", encodeSVG(svgSword)] ] },
+  "assets/wood_wall.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetWoodWall"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["wood_wall", encodeSVG(svgWoodWall)] ] },
+  "assets/roof.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetRoof"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["roof", encodeSVG(svgRoof)] ] },
+  "assets/apple_tree.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetAppleTree"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["apple_tree", encodeSVG(svgAppleTree)] ] },
+  "assets/stone_path.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetStonePath"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["stone_path", encodeSVG(svgStonePath)] ] },
+  "assets/cave_wall.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetCaveWall"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["cave_wall", encodeSVG(svgCaveWall)] ] },
+  "assets/cave_floor.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetCaveFloor"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["cave_floor", encodeSVG(svgCaveFloor)] ] },
+  "assets/puppy.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetPuppy"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["puppy", encodeSVG(svgPuppy)] ] },
+  "assets/npc_generic_1.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetNpcGeneric1"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["npc_generic_1", pngFront] ] },
+  "assets/npc_generic_1_back.bejson": { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: ["AssetNpcGeneric1Back"], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ ["npc_generic_1_back", pngBack] ] },
   "data/object_rules.bejson": {
     Format: "BEJSON", Format_Version: "104", Format_Creator: "Elton Boehnen", Parent_Hierarchy: "104a.mfdb.bejson",
     Records_Type: ["ObjectRules"],
@@ -172,13 +172,14 @@ npcColors.forEach(n => {
   </svg>`;
 
   const assetId = id.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('');
-  const assetIdBack = assetId + "Back";
+  const entityName = `Asset_${id}`;
+  const entityNameBack = `${entityName}_Back`;
   
-  mfdb[`assets/${id}.bejson`] = { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: [`Asset${assetId}`], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgContent)] ] };
-  mfdb[`assets/${id}_back.bejson`] = { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: [`Asset${assetIdBack}`], Fields: [ { name: "data_uri", type: "string" } ], Values: [ [encodeSVG(svgContent)] ] };
+  mfdb[`assets/${id}.bejson`] = { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: [entityName], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ [id, encodeSVG(svgContent)] ] };
+  mfdb[`assets/${id}_back.bejson`] = { Format: "BEJSON", Format_Version: "104", Parent_Hierarchy: "104a.mfdb.bejson", Format_Creator: "Elton Boehnen", Records_Type: [entityNameBack], Fields: [ { name: "asset_id", type: "string" }, { name: "data_uri", type: "string" } ], Values: [ [`${id}_back`, encodeSVG(svgContent)] ] };
   
-  mfdb["104a.mfdb.bejson"].Values.push([`Asset${assetId}`, `assets/${id}.bejson`, 1]);
-  mfdb["104a.mfdb.bejson"].Values.push([`Asset${assetIdBack}`, `assets/${id}_back.bejson`, 1]);
+  mfdb["104a.mfdb.bejson"].Values.push([entityName, `assets/${id}.bejson`, 1]);
+  mfdb["104a.mfdb.bejson"].Values.push([entityNameBack, `assets/${id}_back.bejson`, 1]);
   
   mfdb["data/actor_stats.bejson"].Values.push([id, 50, 0, 2, 50, 0, n.shirt, 0, 0, 0, 0, 0, 0, false]);
 });
@@ -186,13 +187,14 @@ npcColors.forEach(n => {
 const addChunkEntry = (db: any, levelId: string, cx: number, cy: number) => {
   const chunkName = `data/${levelId}_tile_chunk_${cx}_${cy}.bejson`;
   if (!db[chunkName]) {
+    const chunkNodeId = `TileChunk_${levelId}_${cx}_${cy}`;
     db[chunkName] = {
-      Format: "BEJSON", Format_Version: "104", Format_Creator: "Elton Boehnen", Parent_Hierarchy: "104a.mfdb.bejson", Records_Type: [`Tile_${levelId}_${cx}_${cy}`],
+      Format: "BEJSON", Format_Version: "104", Format_Creator: "Elton Boehnen", Parent_Hierarchy: "104a.mfdb.bejson", Records_Type: [chunkNodeId],
       Fields: [ { name: "tile_id", type: "string" }, { name: "level_id_fk", type: "string" }, { name: "x", type: "integer" }, { name: "y", type: "integer" }, { name: "terrain_type", type: "string" }, { name: "object_type", type: "string" } ],
       Values: [] as any[]
     };
     
-    const manifestRow = [`Tile_${levelId}_${cx}_${cy}`, chunkName, 3];
+    const manifestRow = [chunkNodeId, chunkName, 3];
     db["104a.mfdb.bejson"].Values.push(manifestRow);
   }
 };

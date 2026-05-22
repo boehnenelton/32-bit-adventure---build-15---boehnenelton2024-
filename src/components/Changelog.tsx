@@ -16,28 +16,120 @@ export function Changelog() {
         <section className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Game Engine Version</span>
-            <span className="text-lg font-mono text-green-400 font-bold drop-shadow-[0_0_5px_rgba(74,222,128,0.3)]">v1.126.0</span>
+            <span className="text-lg font-mono text-green-400 font-bold drop-shadow-[0_0_5px_rgba(74,222,128,0.3)]">v1.131.0</span>
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Editors Version</span>
-            <span className="text-lg font-mono text-blue-400 font-bold drop-shadow-[0_0_5px_rgba(96,165,250,0.3)]">v1.126.0</span>
+            <span className="text-lg font-mono text-blue-400 font-bold drop-shadow-[0_0_5px_rgba(96,165,250,0.3)]">v1.131.0</span>
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">MFDB Specification</span>
-            <span className="text-lg font-mono text-yellow-400 font-bold drop-shadow-[0_0_5px_rgba(250,204,21,0.3)]">v1.5.1</span>
+            <span className="text-lg font-mono text-yellow-400 font-bold drop-shadow-[0_0_5px_rgba(250,204,21,0.3)]">v1.31</span>
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">BEJSON Library</span>
-            <span className="text-lg font-mono text-pink-400 font-bold drop-shadow-[0_0_5px_rgba(244,114,182,0.3)]">v1.3.3</span>
+            <span className="text-lg font-mono text-pink-400 font-bold drop-shadow-[0_0_5px_rgba(244,114,182,0.3)]">v2.0.1</span>
           </div>
           <div className="ui-panel p-4 flex flex-col gap-1 sm:col-span-2">
             <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">Relational Identity String</span>
-            <span className="text-sm font-mono text-cyan-400 font-bold drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">ID: sword_slasher/126 (System Branding & Sync)</span>
+            <span className="text-sm font-mono text-cyan-400 font-bold drop-shadow-[0_0_5px_rgba(34,211,238,0.3)]">ID: sword_slasher/131 (System Branding & Sync)</span>
           </div>
         </section>
 
         <section className="space-y-4">
           <h2 className="text-lg font-bold text-white uppercase tracking-wider border-l-4 border-purple-500 pl-3">Recent Changes</h2>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 2.4.3 (Build 131 Security & Engine Hardening)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Security Patches:</b> Hardened BEJSON core encryption logic to use sub-microsecond crypto key caching.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-400 mt-0.5">●</span>
+                <span><b>Engine Hardening:</b> Removed Node.js specific <code>fs</code> and <code>path</code> leaks from browser-facing gaming libraries.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Sync 131:</b> Universal baseline synchronization of all JS and TS libraries to Build 131 standards.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 2.4.2 (Build 130 Dependency Sync)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>Library Update:</b> Updated core BEJSON libraries to v2.0.1.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-pink-400 mt-0.5">●</span>
+                <span><b>Export Match:</b> Synchronized all core components to build version 130 alignment to match export versions.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-yellow-400 mt-0.5">●</span>
+                <span><b>MFDB Specification:</b> Hardened MFDB specification tracker to v1.31 compliance.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 2.4.1 (Build 129 Crash Fix)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>"lib bejson" Cleanup:</b> Removed "Switch" branding from all vanilla libraries and internal class names. Renamed core files to <code>bejson_*</code> and <code>lib_bejson.js</code>.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-pink-400 mt-0.5">●</span>
+                <span><b>Bug Fix:</b> Fixed <code>ReferenceError: Switch is not defined</code> crashes by updating global instantiation logic.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Manifest Integrity:</b> Standardized MFDB manifest record types to <code>mfdb</code>, resolving Level 1 initialization failures.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 129:</b> Version bump to v1.129.0 for core engine standardization.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2">
+              <h3 className="font-bold text-white text-base">Update 2.3.0 (Build 127 Asset Fix & Optimization)</h3>
+              <span className="text-xs font-mono text-gray-500">{new Date().toISOString().split('T')[0]}</span>
+            </div>
+            <ul className="text-sm text-gray-300 space-y-2 list-none p-0 m-0">
+              <li className="flex items-start gap-2">
+                <span className="text-blue-400 mt-0.5">●</span>
+                <span><b>"Invisible Maps" Fix:</b> Standardized Asset records to use <code>Asset</code> Record_Type and explicit <code>asset_id</code> fields, resolving schema recognition failures.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-400 mt-0.5">●</span>
+                <span><b>Dependency Reduction:</b> Removed <code>@google/genai</code> and related sub-dependencies to minimize technical debt.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-purple-400 mt-0.5">●</span>
+                <span><b>Build 127:</b> Global version bump to v1.127.0 with technical debt resolution.</span>
+              </li>
+            </ul>
+          </div>
 
           <div className="ui-panel p-5 space-y-3 relative overflow-hidden">
              <div className="absolute top-0 right-0 w-16 h-16 bg-blue-500/10 blur-xl rounded-full translate-x-1/2 -translate-y-1/2"></div>

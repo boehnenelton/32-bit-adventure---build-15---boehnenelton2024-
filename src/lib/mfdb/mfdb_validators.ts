@@ -1,29 +1,16 @@
-/*
-Library:     mfdb_validators.ts
-MFDB Version: 1.3.1
-Format_Creator: Elton Boehnen
-Status:      OFFICIAL - v1.3.1
-Date:        2026-05-06
-*/
-
 /**
- * Library:     mfdb_validators.ts
- * Jurisdiction: ["TYPESCRIPT", "CORE_COMMAND"]
- * Status:      OFFICIAL — Core-Command/Lib (v1.1)
- * Author:      Elton Boehnen
- * Version:     1.1 (OFFICIAL)
- * Date:        2026-04-23
- * Description: (obj["description"] as string | null) ?? null,
-      record_count: (obj["record_count"] as number | null) ?? null,
-      schema_version: (obj["schema_version"] as string | null) ?? null,
-      primary_key: (obj["primary_key"] as string | null) ?? null,
-    } as MFDBManifestRecord;
-  });
-}
-
-/**
-Extract database-level metadata from manifest custom headers.
+ * Library:      mfdb_validators.ts
+ * Family:       Core
+ * Jurisdiction: ["BEJSON_LIBRARIES", "TS"]
+ * Status:       OFFICIAL
+ * Author:       Elton Boehnen
+ * Version:      2.0.1 OFFICIAL
+ * MFDB Version: 1.31
+ * Format_Creator: Elton Boehnen
+ * Date:         2026-05-18
+ * Description:  Bidirectional path and manifest-entity relationship validator.
  */
+
 import {
   BEJSONDocument,
   BEJSONValue,
@@ -157,7 +144,7 @@ export function validateManifest(
       }
 
       // File existence (optional — caller must provide resolvedPaths)
-      if (options.resolvedPaths && !options.resolvedPaths.has(filePath)) {
+      if (options.resolvedPaths && !options.resolvedPaths.has(filePath as string)) {
         _emitError(r, E.ENTITY_FILE_NOT_FOUND,
           "file_path \"" + filePath + "\" does not exist on disk.", "file_path", i);
       }
